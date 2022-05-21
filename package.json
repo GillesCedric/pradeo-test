@@ -1,0 +1,19 @@
+{
+  "name": "pradeo-test-api-app",
+  "version": "1.0.0",
+  "description": "Api app for the pradeo test\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[P",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "server",
+    "api",
+    "rest",
+    "restful",
+    "pradeo",
+    "http"
+  ],
+  "author": "Gilles Cédric",
+  "license": "ISC"
+}
