@@ -1,18 +1,40 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Login from './pages/Login';
+import Authentication from './pages/Authentication';
+import { Lang } from './modules/language/lang';
+import { LangFr } from './modules/language/langFr';
+import { LangEn } from './modules/language/langEn';
+import './styles/app.scss'
 
-class App extends React.Component {
+interface PropsApp {
 
-  render = () => {
-    return (
-      <div className="App">
-        <Login />
-      </div>
-    );
-  }
-  
 }
 
-export default App;
+interface StateApp {
+  vocabulary: Lang
+}
+
+export default class App extends React.Component<PropsApp, StateApp> {
+
+  constructor(props: PropsApp) {
+    super(props)
+    this.state = {
+      vocabulary: this.vocabularies[0]
+    }
+  }
+
+  private readonly updateLanguage = (index: number) => {
+    this.setState({vocabulary: this.vocabularies[index]})
+  }
+
+  private readonly vocabularies: Lang[] = [
+    new LangFr(),
+    new LangEn()
+  ]
+
+  render = () => {
+    return <div className="App">
+        <Authentication vocabulary={this.state.vocabulary} />
+      </div>
+  }
+
+}
