@@ -12,4 +12,10 @@ export class LangFr extends Lang {
 	password = "Mot de passe"
 	your = "Votre"
 	mail = "Addresse Mail"
+	loading = "Chargement..."
+	errors = { 
+		empty: "Veuillez remplir tous les champs" 
+	}
+	page_not_found = "Page non trouvée"
+	lost = "Nous sommes désolés, la page que vous cherchiez ne se trouve pas ici. Le lien que vous avez suivi est peut-être cassé ou n'existe plus. Veuillez réessayer, ou consultez notre site. 	"
 }

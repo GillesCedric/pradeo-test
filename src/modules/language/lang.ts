@@ -13,4 +13,10 @@ export abstract class Lang {
 	abstract readonly mail: string
 	abstract readonly sign_up: string
 	abstract readonly your: string
+	abstract readonly loading: string
+	abstract readonly errors: {
+		empty: string
+	}
+	abstract readonly page_not_found: string
+	abstract readonly lost: string
 }

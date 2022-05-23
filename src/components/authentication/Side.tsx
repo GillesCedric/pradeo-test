@@ -1,7 +1,7 @@
 import React from 'react'
-import { AuthenticationProps } from '../../pages/Authentication';
+import { PageProps } from '../../pages/PageProps';
 
-interface PropsSide extends AuthenticationProps {
+interface PropsSide extends Omit<PageProps, 'history'> {
 	containerRef: (ref: HTMLDivElement | null) => void,
 	updater: () => void;
 	isLogin: boolean
