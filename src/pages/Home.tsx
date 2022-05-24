@@ -1,14 +1,63 @@
 import React from "react"
-import Main from "../components/home/Main"
-import Sidebar from "../components/home/Sidebar"
-import { PageProps } from "./PageProps"
+import Main, { Application } from "../components/home/Main"
+import Sidebar, { User } from "../components/home/Sidebar"
+import { PageProps } from "./Page"
 import '../styles/home.scss'
+import { RingLoader } from "react-spinners"
+import API from "../modules/api/API"
 
-export default class Home extends React.Component<PageProps> {
+interface HomeProps extends PageProps {
+	updater: (index: number) => void
+}
+
+interface HomeState {
+	isLoading: boolean
+	user?: User
+	applications: Application[]
+}
+export default class Home extends React.Component<HomeProps, HomeState> {
+
+	constructor(props: HomeProps) {
+		super(props)
+		this.state = {
+			isLoading: true,
+			applications: []
+		}
+	}
+
+	readonly componentDidMount = () => {
+
+		//FIXME componentDisMount rendered twice
+		API.getAllForUser()
+			.then(value => {
+				this.setState({
+					isLoading: false,
+					applications: value.data.user.Applications,
+					user: {
+						id: value.data.user.id,
+						username: value.data.user.username,
+						avatar: value.data.user.avatar,
+						email: value.data.user.email
+					}
+				})
+			})
+			.catch(error => {
+				console.log(error)
+			})
+	}
+
 	render = () => {
-		return <>
-			<Sidebar />
-			<Main />
-		</>
+		if (this.state.isLoading) return <div className="loader"><RingLoader /></div>
+		return <div className="home">
+			<Sidebar
+				vocabulary={this.props.vocabulary}
+				user={this.state.user}
+				updater={this.props.updater}
+			/>
+			<Main
+				vocabulary={this.props.vocabulary}
+				applications={this.state.applications}
+			/>
+		</div>
 	}
 }

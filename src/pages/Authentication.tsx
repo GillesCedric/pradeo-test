@@ -1,11 +1,10 @@
-import React from 'react';
-import '../styles/authentication.scss';
-import '../styles/style.scss';
-import 'react-pro-sidebar/dist/css/styles.css';
-import Register from '../components/authentication/Register';
-import Login from '../components/authentication/Login';
-import Side from '../components/authentication/Side';
-import { PageProps } from './PageProps';
+import React from 'react'
+import '../styles/authentication.scss'
+import '../styles/style.scss'
+import Register from '../components/authentication/Register'
+import Login from '../components/authentication/Login'
+import Side from '../components/authentication/Side'
+import { PageProps } from './Page'
 
 export default class Authentication extends React.Component<PageProps, { isLogin: boolean }> {
 
@@ -35,7 +34,7 @@ export default class Authentication extends React.Component<PageProps, { isLogin
 	}
 
 	render = () => {
-		return <>
+		return <div className='authentication'>
 			<div className="login">
 				<div className="container">
 					{this.state.isLogin && <Login vocabulary={this.props.vocabulary} />}
@@ -43,6 +42,6 @@ export default class Authentication extends React.Component<PageProps, { isLogin
 				</div>
 				<Side vocabulary={this.props.vocabulary} containerRef={ref => this.side = ref} updater={this.updateComponent} isLogin={this.state.isLogin} />
 			</div>
-		</>
+		</div>
 	}
 }

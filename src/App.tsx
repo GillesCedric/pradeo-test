@@ -5,6 +5,7 @@ import { Lang } from './modules/language/lang';
 import { LangFr } from './modules/language/langFr';
 import { LangEn } from './modules/language/langEn';
 import './styles/app.scss'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import NotFound from './pages/404';
 import Home from './pages/Home';
 import { ProtectedPage } from './components/authentication/Protected';
@@ -27,22 +28,18 @@ export default class App extends React.Component<PropsApp, StateApp> {
     }
   }
 
-  private readonly updateLanguage = (index: number) => {
-    this.setState({ vocabulary: this.vocabularies[index] })
-  }
-
   private readonly vocabularies: Lang[] = [
     new LangFr(),
     new LangEn()
   ]
 
   render = () => {
-    return <div className="App">
+    return <>
       <Routes>
         <Route path='/authenticate' element={<Authentication vocabulary={this.state.vocabulary} />} />
         <Route path='/dashboard' element={
           <ProtectedPage>
-            <Home vocabulary={this.state.vocabulary} />
+            <Home updater={(index: number) => this.setState({ vocabulary: this.vocabularies[index]})} vocabulary={this.state.vocabulary} />
           </ProtectedPage>
         } />
         <Route path='*' element={
@@ -51,7 +48,7 @@ export default class App extends React.Component<PropsApp, StateApp> {
           </ProtectedPage>
         } />
       </Routes>
-    </div>
+    </>
   }
 
 }

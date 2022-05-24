@@ -16,6 +16,24 @@ export class LangFr extends Lang {
 	errors = { 
 		empty: "Veuillez remplir tous les champs" 
 	}
-	page_not_found = "Page non trouvée"
-	lost = "Nous sommes désolés, la page que vous cherchiez ne se trouve pas ici. Le lien que vous avez suivi est peut-être cassé ou n'existe plus. Veuillez réessayer, ou consultez notre site. 	"
+	add = {
+		_: "Nouveau",
+		user: "Ajouter un utilisateur",
+		application: "Ajouter une application"
+	}
+	dashboard = "Panneau d'administration"
+	users = "Utilisateurs"
+	my_applications = "Mes Applications"
+	settings = "Paramètres"
+	language = "Langue"
+	update = "Modifier"
+	delete = "Supprimer"
+	english = "Anglais"
+	french = "Français"
+	error = "Erreur"
+	notification = "Notification"
+	close = "Fermer"
+	save = "Enregistrer"
+	download_apk = "Télécharger le fichier apk"
+	register_success = "Inscription réussie! Veuillez vous connecter"
 }

@@ -1,9 +1,12 @@
 import React from "react"
-import Cookies from "../../modules/cookies/Cookies";
-import { PageProps } from '../../pages/PageProps';
-import Toast from "../Toats";
+import Cookies from "../../modules/cookies/Cookies"
+import { PageProps, PageState } from '../../pages/Page'
 
-export default abstract class Authentication extends React.Component<PageProps, {isLoading: boolean, error: string, redirect: boolean}> {
+interface AuthenticationState extends PageState{
+	isLoading: boolean
+	redirect: boolean
+}
+export default abstract class Authentication extends React.Component<PageProps, AuthenticationState> {
 
 	protected readonly cookies = Cookies
 
@@ -11,10 +14,13 @@ export default abstract class Authentication extends React.Component<PageProps, 
 		super(props)
 		this.state = {
 			isLoading : false,
-			error : '',
-			redirect: false
+			redirect: false,
+			notification: {
+				status: 'danger',
+				isActive: false,
+				text: ''
+			}
 		}
-		
 		
 	}
 

@@ -1,5 +1,5 @@
 import React from "react"
-import { PageProps } from "./PageProps"
+import { PageProps } from "./Page"
 import '../styles/404.scss';
 
 export default class NotFound extends React.Component<PageProps> {

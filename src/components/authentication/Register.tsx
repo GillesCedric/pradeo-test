@@ -18,57 +18,68 @@ export default class Register extends Authentication {
 		const email = data.get('email') as string
 
 		if (username.toString().length > 0 && password.toString().length > 0 && email.toString().length > 0) {
-			this.setState({isLoading: true})
-			API.login({
+			this.setState({ isLoading: true })
+			API.register({
 				username,
 				password,
 				email
 			}).then(value => {
-				this.setState({redirect: true})
+				this.setState({ notification: {isActive: true, status: 'success', text: this.props.vocabulary.register_success} })
 			})
-			.catch(error => {
-				console.log(error)
-				this.setState({error: error.response.data.error})
-			})
-			.finally(() => {
-				this.setState({isLoading: false})
-			})
-		}else{
-			this.setState({error: this.props.vocabulary.errors.empty})
+				.catch(error => {
+					console.log(error)
+					this.setState({ notification: {isActive: true, status: 'danger', text: error.response.data.error} })
+				})
+				.finally(() => {
+					this.setState({ isLoading: false })
+				})
+		} else {
+			this.setState({ notification: { isActive: true, text: this.props.vocabulary.errors.empty, status: 'danger' } })
 		}
 	}
 
 	render() {
-		if(this.state.redirect) return <Navigate to={'/authenticate'} />
-		
-		return <div className="base-container" >
-			<div className="header">
-				{this.props.vocabulary.sign_up}
-			</div>
-			<div className="content">
-				<div className="image">
-					<img src={loginImg} alt="register-img" />
+		if (this.state.redirect) return <Navigate to={'/authenticate'} />
+
+		return <>
+			<div className="base-container" >
+				<div className="header">
+					{this.props.vocabulary.sign_up}
 				</div>
-				<div className="form">
-					<div className="form-group">
-						<label htmlFor="username">{this.props.vocabulary.username}</label>
-						<input type="text" name="username" placeholder={`${this.props.vocabulary.your}  ${this.props.vocabulary.username}`} required />
+				<div className="content">
+					<div className="image">
+						<img src={loginImg} alt="register-img" />
 					</div>
-					<div className="form-group">
-						<label htmlFor="password">{this.props.vocabulary.password}</label>
-						<input type="password" name="password" placeholder={`${this.props.vocabulary.your}  ${this.props.vocabulary.password}`} required />
-					</div>
-					<div className="form-group">
-						<label htmlFor="email">{this.props.vocabulary.mail}</label>
-						<input type="email" name="email" placeholder={`${this.props.vocabulary.your}  ${this.props.vocabulary.mail}`} required />
-					</div>
-					<div className="footer">
-						<button disabled={this.state.isLoading} className="btn" type="submit" onClick={(event) => this.handleSubmit(event)}>
-							{this.state.isLoading ? this.props.vocabulary.loading : this.props.vocabulary.sign_up}
-						</button>
-					</div>
+					<form className="form" ref={ref => this.form = ref as HTMLFormElement} >
+						<div className="form-group">
+							<label htmlFor="username">{this.props.vocabulary.username}</label>
+							<input type="text" name="username" placeholder={`${this.props.vocabulary.your}  ${this.props.vocabulary.username}`} required />
+						</div>
+						<div className="form-group">
+							<label htmlFor="password">{this.props.vocabulary.password}</label>
+							<input type="password" name="password" placeholder={`${this.props.vocabulary.your}  ${this.props.vocabulary.password}`} required />
+						</div>
+						<div className="form-group">
+							<label htmlFor="email">{this.props.vocabulary.mail}</label>
+							<input type="email" name="email" placeholder={`${this.props.vocabulary.your}  ${this.props.vocabulary.mail}`} required />
+						</div>
+						<div className="footer">
+							<button disabled={this.state.isLoading} className="btn-a" type="submit" onClick={(event) => this.handleSubmit(event)}>
+								{this.state.isLoading ? this.props.vocabulary.loading : this.props.vocabulary.sign_up}
+							</button>
+						</div>
+					</form>
 				</div>
 			</div>
-		</div>
+			<Toast
+				title={this.state.notification.status === "danger" ? this.props.vocabulary.error : this.props.vocabulary.notification}
+				vocabulary={this.props.vocabulary}
+				message={this.state.notification.text}
+				variant={this.state.notification.status}
+				show={this.state.notification.isActive}
+				position="middle-center"
+				onClose={() => this.setState({ notification: { isActive: false, text: '', status: 'danger' } })}
+			/>
+		</>
 	}
 }

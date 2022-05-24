@@ -1,5 +1,5 @@
 import React from 'react'
-import { PageProps } from '../../pages/PageProps';
+import { PageProps } from '../../pages/Page';
 
 interface PropsSide extends Omit<PageProps, 'history'> {
 	containerRef: (ref: HTMLDivElement | null) => void,

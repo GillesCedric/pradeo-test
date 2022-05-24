@@ -16,6 +16,24 @@ export class LangEn extends Lang {
 	errors = { 
 		empty: "Please fill in all fields" 
 	}
-	page_not_found = "Page not found"
-	lost = "We're sorry, the page you were looking for isn't found here. The link you followed may either be broken or no longer exists. Please try again, or take a look at our."
+	add = {
+		_: "New",
+		user: "Add User",
+		application: "Add Application"
+	}
+	dashboard = "Dashboard"
+	users = "Users"
+	my_applications = "My Applications"
+	settings = "Settings"
+	language = "Language"
+	update = "Update"
+	delete = "Delete"
+	english = "English"
+	french = "French"
+	error = "Error"
+	notification = "Notification"
+	close = "Close"
+	save = "Save"
+	download_apk = "Download the apk file"
+	register_success = "Successful registration! Please log in"
 }

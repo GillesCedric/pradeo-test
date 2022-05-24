@@ -1,4 +1,8 @@
+//custom font
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+//react-pro-sidebar style
+@import '~react-pro-sidebar/dist/scss/styles.scss';
 
 $sidebar-bg-color: #0c1e35;
 $submenu-bg-color: rgba(255, 255, 255, 0.05);
@@ -8,7 +12,6 @@ $highlight-color: #dee2ec;
 $icon-bg-color: rgba(255, 255, 255, 0.05);
 $icon-size: 35px;
 
-@import '~react-pro-sidebar/dist/scss/styles.scss';
 body {
   margin: 0;
   height: 100vh;
@@ -20,7 +23,7 @@ body {
   height: 100%;
 }
 
-.App {
+.home, .loader {
   height: 100%;
   display: flex;
   position: relative;
@@ -123,32 +126,6 @@ body {
     }
   }
 
-  &.rtl {
-    direction: rtl;
-    text-align: right;
-
-    header {
-      h1 {
-        transform: translateX(20px);
-      }
-    }
-    .block {
-      direction: rtl;
-      > span {
-        margin-left: 0;
-        margin-right: 10px;
-      }
-    }
-    .sidebar-btn-wrapper {
-      .sidebar-btn {
-        span {
-          margin-left: 0;
-          margin-right: 5px;
-        }
-      }
-    }
-  }
-
   @media (max-width: 767.98px) {
     overflow-x: hidden;
     header {
@@ -160,12 +137,6 @@ body {
   @media (max-width: $breakpoint-md) {
     .btn-toggle {
       display: flex;
-    }
-
-    &.rtl {
-      .btn-toggle {
-        margin-left: auto;
-      }
     }
   }
 }

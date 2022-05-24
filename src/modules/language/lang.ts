@@ -1,11 +1,20 @@
 export abstract class Lang {
-	public readonly identifier: string
-	public readonly name: string
+	protected readonly _identifier: string
+	protected readonly _name: string
 
 	constructor(identifier: string, name: string) {
-		this.identifier = identifier
-		this.name = name
+		this._identifier = identifier
+		this._name = name
 	}
+
+	public get name() : string {
+		return this._name
+	}
+
+	public get identifier() : string {
+		return this._name
+	}
+	
 
 	abstract readonly sign_in: string
 	abstract readonly username: string
@@ -17,6 +26,24 @@ export abstract class Lang {
 	abstract readonly errors: {
 		empty: string
 	}
-	abstract readonly page_not_found: string
-	abstract readonly lost: string
+	abstract readonly add: {
+		_: string
+		user: string
+		application: string
+	}
+	abstract readonly dashboard: string
+	abstract readonly users: string
+	abstract readonly my_applications: string
+	abstract readonly settings: string
+	abstract readonly language: string
+	abstract readonly update: string
+	abstract readonly delete: string
+	abstract readonly english: string
+	abstract readonly french: string
+	abstract readonly error: string
+	abstract readonly notification: string
+	abstract readonly close: string
+	abstract readonly save: string
+	abstract readonly download_apk: string
+	abstract readonly register_success: string
 }

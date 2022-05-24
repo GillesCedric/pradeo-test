@@ -8,6 +8,14 @@
   }
 }
 
+.authentication, .loader {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Open Sans", sans-serif;
+}
+
 //Login Main Container
 .login {
   width: 27em;
@@ -83,7 +91,7 @@
 }
 
 //Button
-.btn {
+.btn-a {
   font-size: 21px;
   padding: 5px 20px;
   border: 0;
