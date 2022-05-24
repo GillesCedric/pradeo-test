@@ -11,13 +11,13 @@ export default class JWTUtils {
 		return jwt.sign({ userId: user.id }, this.JWT_SIGN_SECRET, { expiresIn: this.EXPIRE_IN })
 	}
 
-	private static readonly parseToken: (token: string) => string = (token: string) => {
+	public static readonly parseToken: (token: string) => string = (token: string) => {
 		return token.replace('Bearer ', '')
 	}
 
 	public static readonly getUserFromToken: (token: string) => number = (token: string) => {
 		token = this.parseToken(token)
-		let userId = 0
+		let userId = -1
 		try {
 			const jwtToken = jwt.verify(token, this.JWT_SIGN_SECRET);
 			userId = jwtToken as unknown as number
