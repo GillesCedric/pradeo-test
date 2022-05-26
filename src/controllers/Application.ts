@@ -1,54 +1,171 @@
-import User  from '../models/User';
-import { Request, Response } from 'express';
+import User from '../models/User'
+import { Request, Response } from 'express'
+import * as async from 'async'
+import * as bcrypt from 'bcrypt'
+import JWTUtils from '../utils/JWTUtils'
+import Application from 'models/Application'
 
 
-export class ApplicationController{
-/*
-    public addNewContact (req: Request, res: Response) {                
-        let newContact = new Contact(req.body);
-    
-        newContact.save((err, contact) => {
-            if(err){
-                res.send(err);
-            }    
-            res.json(contact);
-        });
+export class ApplicationController {
+    public readonly add: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+        //FIXME handle the request and insert the data here
+        const targetUserId = Number.parseInt(req.params.userId)
+
+        return res.status(200).json('Application téléchargé avec succès')
+
     }
 
-    public getContacts (req: Request, res: Response) {           
-        Contact.find({}, (err, contact) => {
-            if(err){
-                res.send(err);
+    public readonly update: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+        const username = req.body.username
+        const password = req.body.password
+
+        if (req.body.username == null || req.body.password == null) {
+            return res.status(500).json({
+                error: "Paramètres manquants"
+            })
+        }
+
+        async.waterfall([
+            (done: any) => {
+                User.findOne({
+                    where: { username: username }
+                })
+                    .then((userFound: User) => {
+                        done(null, userFound)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        return res.status(500).json({ error: 'Impossible de vérifier l\'utilisateur' })
+                    })
+            }, (userFound: User, done: any) => {
+                if (userFound) {
+                    bcrypt.compare(password, userFound.password, (error: Error, result: boolean) => {
+                        console.log(error)
+                        done(null, userFound, result)
+                    })
+                } else {
+                    return res.status(500).json({ error: 'Nom d\'utilisateur incorrect' })
+                }
+            }, (userFound: User, result: boolean, done: any) => {
+                if (result) {
+                    done(userFound)
+                } else {
+                    return res.status(403).json({ error: 'Mot de passe incorrect' })
+                }
             }
-            res.json(contact);
-        });
+        ], (userFound: User) => {
+            if (userFound) {
+                return res.status(200).json({
+                    userId: userFound.id,
+                    token: JWTUtils.generateTokenForUser(userFound)
+                })
+            } else {
+                return res.status(500).json({ error: 'Impossible de connecter l\'utilisateur' })
+            }
+        })
+
     }
 
-    public getContactWithID (req: Request, res: Response) {           
-        Contact.findById(req.params.contactId, (err, contact) => {
-            if(err){
-                res.send(err);
+    public readonly delete: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+        const username = req.body.username
+        const password = req.body.password
+
+        if (req.body.username == null || req.body.password == null) {
+            return res.status(500).json({
+                error: "Paramètres manquants"
+            })
+        }
+
+        async.waterfall([
+            (done: any) => {
+                User.findOne({
+                    where: { username: username }
+                })
+                    .then((userFound: User) => {
+                        done(null, userFound)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        return res.status(500).json({ error: 'Impossible de vérifier l\'utilisateur' })
+                    })
+            }, (userFound: User, done: any) => {
+                if (userFound) {
+                    bcrypt.compare(password, userFound.password, (error: Error, result: boolean) => {
+                        console.log(error)
+                        done(null, userFound, result)
+                    })
+                } else {
+                    return res.status(500).json({ error: 'Nom d\'utilisateur incorrect' })
+                }
+            }, (userFound: User, result: boolean, done: any) => {
+                if (result) {
+                    done(userFound)
+                } else {
+                    return res.status(403).json({ error: 'Mot de passe incorrect' })
+                }
             }
-            res.json(contact);
-        });
+        ], (userFound: User) => {
+            if (userFound) {
+                return res.status(200).json({
+                    userId: userFound.id,
+                    token: JWTUtils.generateTokenForUser(userFound)
+                })
+            } else {
+                return res.status(500).json({ error: 'Impossible de connecter l\'utilisateur' })
+            }
+        })
+
     }
 
-    public updateContact (req: Request, res: Response) {           
-        Contact.findOneAndUpdate({ _id: req.params.contactId }, req.body, { new: true }, (err, contact) => {
-            if(err){
-                res.send(err);
+    public readonly getAll: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+        const username = req.body.username
+        const password = req.body.password
+
+        if (req.body.username == null || req.body.password == null) {
+            return res.status(500).json({
+                error: "Paramètres manquants"
+            })
+        }
+
+        async.waterfall([
+            (done: any) => {
+                User.findOne({
+                    where: { username: username }
+                })
+                    .then((userFound: User) => {
+                        done(null, userFound)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        return res.status(500).json({ error: 'Impossible de vérifier l\'utilisateur' })
+                    })
+            }, (userFound: User, done: any) => {
+                if (userFound) {
+                    bcrypt.compare(password, userFound.password, (error: Error, result: boolean) => {
+                        console.log(error)
+                        done(null, userFound, result)
+                    })
+                } else {
+                    return res.status(500).json({ error: 'Nom d\'utilisateur incorrect' })
+                }
+            }, (userFound: User, result: boolean, done: any) => {
+                if (result) {
+                    done(userFound)
+                } else {
+                    return res.status(403).json({ error: 'Mot de passe incorrect' })
+                }
             }
-            res.json(contact);
-        });
+        ], (userFound: User) => {
+            if (userFound) {
+                return res.status(200).json({
+                    userId: userFound.id,
+                    token: JWTUtils.generateTokenForUser(userFound)
+                })
+            } else {
+                return res.status(500).json({ error: 'Impossible de connecter l\'utilisateur' })
+            }
+        })
+
     }
 
-    public deleteContact (req: Request, res: Response) {           
-        Contact.remove({ _id: req.params.contactId }, (err, contact) => {
-            if(err){
-                res.send(err);
-            }
-            res.json({ message: 'Successfully deleted contact!'});
-        });
-    }
-    */
 }

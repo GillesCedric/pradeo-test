@@ -1,8 +1,8 @@
-import App from './App';
-import * as dotenv from "dotenv";
+import App from './App'
+import * as dotenv from "dotenv"
 
 class Server {
-    private readonly app: App;
+    private readonly app: App
     private readonly port: string | number
 
     constructor(){

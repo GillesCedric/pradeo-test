@@ -35,6 +35,7 @@ export default class App {
     }
 
     private databaseSetup(): void{
+        //Uncomment the line below to Initialize the database
         //new Initialize().init()
     }
 

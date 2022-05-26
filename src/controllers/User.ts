@@ -10,6 +10,8 @@ export class UserController {
 
     private readonly EMAIL_REGEX: RegExp = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
 
+    private readonly PASSWORD_REGEX = /^(?=.*\d).{4,12}$/
+
     public readonly login: (req: Request, res: Response) => void = (req: Request, res: Response) => {
         const username = req.body.username
         const password = req.body.password
@@ -75,6 +77,12 @@ export class UserController {
             return res.status(400).json({ error: "L'adresse mail n'est pas valide" })
         }
 
+        //Uncomment this block to add the password regex verification
+
+        // if (!this.PASSWORD_REGEX.test(password)) {
+		// 	return res.status(400).json({ 'error': 'Mot de passe invalide (il doit être entre 4 et 12 caractères et contenir aumoins un caractère spécial)' });
+		// }
+
         async.waterfall([
             (done: any) => {
                 User.findOne({
@@ -125,64 +133,13 @@ export class UserController {
 
     }
 
-    public readonly add: (req: Request, res: Response) => void = (req: Request, res: Response) => {
-        const username = req.body.username
-        const password = req.body.password
-
-        if (req.body.username == null || req.body.password == null || req.body.email == null) {
-            return res.status(500).json({
-                error: "Paramètres manquants"
-            })
-        }
-
-        async.waterfall([
-            (done: any) => {
-                User.findOne({
-                    where: { username: username }
-                })
-                    .then((userFound: User) => {
-                        done(null, userFound)
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        return res.status(500).json({ error: 'Impossible de vérifier l\'utilisateur' })
-                    })
-            }, (userFound: User, done: any) => {
-                if (userFound) {
-                    bcrypt.compare(password, userFound.password, (error: Error, result: boolean) => {
-                        console.log(error)
-                        done(null, userFound, result)
-                    })
-                } else {
-                    return res.status(500).json({ error: 'Nom d\'utilisateur incorrect' })
-                }
-            }, (userFound: User, result: boolean, done: any) => {
-                if (result) {
-                    done(userFound)
-                } else {
-                    return res.status(403).json({ error: 'Mot de passe incorrect' })
-                }
-            }
-        ], (userFound: User) => {
-            if (userFound) {
-                return res.status(200).json({
-                    userId: userFound.id,
-                    token: JWTUtils.generateTokenForUser(userFound)
-                })
-            } else {
-                return res.status(500).json({ error: 'Impossible de connecter l\'utilisateur' })
-            }
-        })
-
-    }
-
     public readonly get: (req: Request, res: Response) => void = (req: Request, res: Response) => {
         const authorization = req.headers.authorization
         const userId = JWTUtils.getUserFromToken(authorization)
 
         if (userId < 0) return res.status(400).json({ error: 'Token invalide' })
 
-        const targetUserId = Number.parseInt(req.params.id)
+        const targetUserId = Number.parseInt(req.params.userId)
 
         if (Number.isNaN(targetUserId) || targetUserId <= 0) return res.status(400).json({ error: 'id de l\'utilisateur invalide' })
 
@@ -196,7 +153,7 @@ export class UserController {
                     where: { id: targetUserId },
                     include: [{
                         model: Application,
-                        attributes: ['id', 'name', 'comment', 'status']
+                        attributes: ['id', 'hash', 'name', 'comment', 'status']
                     }]
                 })
                     .then((userFound: User) => {
@@ -219,108 +176,6 @@ export class UserController {
     }
 
     public readonly getAll: (req: Request, res: Response) => void = (req: Request, res: Response) => {
-        const username = req.body.username
-        const password = req.body.password
-
-        if (req.body.username == null || req.body.password == null || req.body.email == null) {
-            return res.status(500).json({
-                error: "Paramètres manquants"
-            })
-        }
-
-        async.waterfall([
-            (done: any) => {
-                User.findOne({
-                    where: { username: username }
-                })
-                    .then((userFound: User) => {
-                        done(null, userFound)
-                    })
-                    .catch(error => {
-                        console.log('error:' + error)
-                        return res.status(500).json({ error: 'Impossible de vérifier l\'utilisateur' })
-                    })
-            }, (userFound: User, done: any) => {
-                if (userFound) {
-                    bcrypt.compare(password, userFound.password, (error: Error, result: boolean) => {
-                        console.log(error)
-                        done(null, userFound, result)
-                    })
-                } else {
-                    return res.status(500).json({ error: 'Nom d\'utilisateur incorrect' })
-                }
-            }, (userFound: User, result: boolean, done: any) => {
-                if (result) {
-                    done(userFound)
-                } else {
-                    return res.status(403).json({ error: 'Mot de passe incorrect' })
-                }
-            }
-        ], (userFound: User) => {
-            if (userFound) {
-                return res.status(200).json({
-                    userId: userFound.id,
-                    token: JWTUtils.generateTokenForUser(userFound)
-                })
-            } else {
-                return res.status(500).json({ error: 'Impossible de connecter l\'utilisateur' })
-            }
-        })
-
-    }
-
-    public readonly update: (req: Request, res: Response) => void = (req: Request, res: Response) => {
-        const username = req.body.username
-        const password = req.body.password
-
-        if (req.body.username == null || req.body.password == null || req.body.email == null) {
-            return res.status(500).json({
-                error: "Paramètres manquants"
-            })
-        }
-
-        async.waterfall([
-            (done: any) => {
-                User.findOne({
-                    where: { username: username }
-                })
-                    .then((userFound: User) => {
-                        done(null, userFound)
-                    })
-                    .catch(error => {
-                        console.log('error:' + error)
-                        return res.status(500).json({ error: 'Impossible de vérifier l\'utilisateur' })
-                    })
-            }, (userFound: User, done: any) => {
-                if (userFound) {
-                    bcrypt.compare(password, userFound.password, (error: Error, result: boolean) => {
-                        console.log(error)
-                        done(null, userFound, result)
-                    })
-                } else {
-                    return res.status(500).json({ error: 'Nom d\'utilisateur incorrect' })
-                }
-            }, (userFound: User, result: boolean, done: any) => {
-                if (result) {
-                    done(userFound)
-                } else {
-                    return res.status(403).json({ error: 'Mot de passe incorrect' })
-                }
-            }
-        ], (userFound: User) => {
-            if (userFound) {
-                return res.status(200).json({
-                    userId: userFound.id,
-                    token: JWTUtils.generateTokenForUser(userFound)
-                })
-            } else {
-                return res.status(500).json({ error: 'Impossible de connecter l\'utilisateur' })
-            }
-        })
-
-    }
-
-    public readonly delete: (req: Request, res: Response) => void = (req: Request, res: Response) => {
         const username = req.body.username
         const password = req.body.password
 

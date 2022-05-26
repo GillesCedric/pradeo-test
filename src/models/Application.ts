@@ -6,7 +6,7 @@ interface ApplicationAttributes {
   hash: string
   name?: string
   comment?: string
-  status?: 'Sûre' | 'Virus' | 'En cours de vérification'
+  status: 'Sûre' | 'Virus' | 'En cours de vérification'
   createdAt?: Date
   updatedAt?: Date
   deletedAt?: Date
@@ -42,7 +42,7 @@ export default class Application extends Model<ApplicationAttributes, Applicatio
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     comment: {
       type: DataTypes.TEXT,
