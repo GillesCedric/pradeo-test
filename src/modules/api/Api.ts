@@ -10,10 +10,6 @@ export default class API {
 		return await axios.get(this.apiUrl + 'users')
 	}
 
-	public static readonly addUser:  (data: any) => Promise<any> = async (data: any) => {
-		return await axios.post(this.apiUrl + 'users', data)
-	}
-
 	public static readonly login:  (data: any) => Promise<any> = async (data: any) => {
 		return await axios.post(this.apiUrl + 'users/login', data)
 	}
@@ -31,20 +27,31 @@ export default class API {
 		}})
 	}
 
-	public static readonly updateUser:  (data: any, id?: number) => Promise<any> = async (data: any, id?: number) => {
+	public static readonly getAllApplications:  () => Promise<any> = async () => {
+		return await axios.get(this.apiUrl + 'applications')
+	}
+
+	public static readonly addApplication:  (data: FormData) => Promise<any> = async (data: FormData) => {
 		const {token, userId} = Crypto.decrypt(Cookies.get('user'))
-		if(id === undefined) id = userId
 		const authorization = this.tokenPrefix + ' ' + token
-		return await axios.put(this.apiUrl + 'users/' + userId, data, {headers: {
+		return await axios.post(this.apiUrl + 'users/' + userId + "/applications", data, {headers: {
+			authorization: authorization,
+			"Content-Type": "multipart/form-data"
+		}})
+	}
+
+	public static readonly updateApplication:  (data: FormData) => Promise<any> = async (data: FormData) => {
+		const {token, userId} = Crypto.decrypt(Cookies.get('user'))
+		const authorization = this.tokenPrefix + ' ' + token
+		return await axios.put(this.apiUrl + 'users/' + userId + "/applications", data, {headers: {
 			authorization: authorization
 		}})
 	}
 
-	public static readonly deleteUser:  (id?: number ) => Promise<any> = async (id?: number) => {
+	public static readonly deleteApplication:  () => Promise<any> = async () => {
 		const {token, userId} = Crypto.decrypt(Cookies.get('user'))
-		if(id === undefined) id = userId
 		const authorization = this.tokenPrefix + ' ' + token
-		return await axios.delete(this.apiUrl + 'users/' + userId,  {headers: {
+		return await axios.delete(this.apiUrl + 'users/' + userId + "/applications", {headers: {
 			authorization: authorization
 		}})
 	}

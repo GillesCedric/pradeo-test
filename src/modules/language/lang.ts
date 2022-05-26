@@ -7,7 +7,7 @@ export abstract class Lang {
 		this._name = name
 	}
 
-	public get name() : string {
+	public get langName() : string {
 		return this._name
 	}
 
@@ -31,13 +31,17 @@ export abstract class Lang {
 		user: string
 		application: string
 	}
+	abstract readonly delete: {
+		_: string
+		user: string
+		application: string
+	}
 	abstract readonly dashboard: string
 	abstract readonly users: string
 	abstract readonly my_applications: string
 	abstract readonly settings: string
 	abstract readonly language: string
 	abstract readonly update: string
-	abstract readonly delete: string
 	abstract readonly english: string
 	abstract readonly french: string
 	abstract readonly error: string
@@ -46,4 +50,12 @@ export abstract class Lang {
 	abstract readonly save: string
 	abstract readonly download_apk: string
 	abstract readonly register_success: string
+	abstract readonly cancel: string
+	abstract readonly id: string
+	abstract readonly name: string
+	abstract readonly hash: string
+	abstract readonly comment: string
+	abstract readonly status: string
+	abstract readonly actions: string
+	abstract readonly applications_empty: string
 }

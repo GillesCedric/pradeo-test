@@ -21,13 +21,17 @@ export class LangEn extends Lang {
 		user: "Add User",
 		application: "Add Application"
 	}
+	delete = {
+		_: "Delete",
+		user: "Delete User",
+		application: "Delete Application"
+	}
 	dashboard = "Dashboard"
 	users = "Users"
 	my_applications = "My Applications"
 	settings = "Settings"
 	language = "Language"
 	update = "Update"
-	delete = "Delete"
 	english = "English"
 	french = "French"
 	error = "Error"
@@ -36,4 +40,12 @@ export class LangEn extends Lang {
 	save = "Save"
 	download_apk = "Download the apk file"
 	register_success = "Successful registration! Please log in"
+	cancel = "Cancel"
+	id = "Id"
+	name = "Name"
+	hash = "Hash"
+	comment = "Comment"
+	status = "Status"
+	actions = "Actions"
+	applications_empty = "You have no application"
 }

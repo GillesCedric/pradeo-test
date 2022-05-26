@@ -79,6 +79,6 @@ export default class Crypto {
 	 * @param {number} length {10} the length of the word
 	 * @returns {string} the random identifier
 	 */
-	public  static readonly identifier = (suffix: string = '', length: number = this.randomLength): string => Date.now() + this.random(length) + suffix
+	public  static readonly identifier = (suffix: string | number = '', length: number = this.randomLength): string => Date.now() + this.random(length) + suffix
 
 }

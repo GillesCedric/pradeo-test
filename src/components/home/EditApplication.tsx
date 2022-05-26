@@ -2,27 +2,18 @@ import React from "react"
 import { Button, Form, Modal } from "react-bootstrap"
 import { Lang } from "../../modules/language/lang"
 import { PageProps, PageState } from "../../pages/Page"
+import { Application } from "./Main"
 
-interface AddApplicationProps extends PageProps {
+interface EditApplicationProps extends PageProps {
 	show: boolean
 	vocabulary: Lang
 	onClose: () => void
 	onSubmit: (form: FormData) => void
 	onError: (error: string) => void
+	application: Application
 }
 
-interface AddApplicationState {
-	file: File | null
-}
-
-export default class AddApplication extends React.Component<AddApplicationProps, AddApplicationState>{
-
-	constructor(props: AddApplicationProps){
-		super(props)
-		this.state = {
-			file: null
-		}
-	}
+export default class EditApplication extends React.Component<EditApplicationProps>{
 
 	static defaultProps = {
     onSubmit: () => {},
@@ -40,13 +31,8 @@ export default class AddApplication extends React.Component<AddApplicationProps,
 		if(this.form === null) return
 
 		const form = new FormData(this.form)
-
-		if(this.state.file != null ) {
-			form.append('file', this.state.file, this.state.file.name)
-			this.props.onSubmit(form)
-		}else{
-			this.props.onError('Aucune application n\'a été sélectionnée')
-		}
+		
+		this.props.onSubmit(form)
 			
 	}
 
@@ -57,11 +43,37 @@ export default class AddApplication extends React.Component<AddApplicationProps,
 					<Modal.Title>{this.props.vocabulary.add.application}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form ref={(form: HTMLFormElement | null) => this.form = form} encType=''>
-							<Form.Label>{this.props.vocabulary.download_apk}</Form.Label>
+					<Form ref={(form: HTMLFormElement | null) => this.form = form}>
+							<Form.Label>{this.props.vocabulary.id}</Form.Label>
 							<Form.Control
-								type="file"
-								onChange={(event: React.ChangeEvent<HTMLInputElement>) => this.setState({file: event.target.files !== null ? event.target.files[0] : null})}
+								type="text"
+								defaultValue={this.props.application.id}
+								readOnly
+							/>
+							<Form.Label>{this.props.vocabulary.hash}</Form.Label>
+							<Form.Control
+								type="text"
+								defaultValue={this.props.application.hash}
+								readOnly
+							/>
+							<Form.Label>{this.props.vocabulary.name}</Form.Label>
+							<Form.Control
+								type="text"
+								name="name"
+								defaultValue={this.props.application.name}
+							/>
+							<Form.Label>{this.props.vocabulary.status}</Form.Label>
+							<Form.Control
+								type="text"
+								readOnly
+								defaultValue={this.props.application.status}
+							/>
+							<Form.Label>{this.props.vocabulary.comment}</Form.Label>
+							<Form.Control
+								as={"textarea"}
+								rows={4}
+								name="comment"
+								defaultValue={this.props.application.comment}
 							/>
 					</Form>
 				</Modal.Body>

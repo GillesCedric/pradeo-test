@@ -21,13 +21,17 @@ export class LangFr extends Lang {
 		user: "Ajouter un utilisateur",
 		application: "Ajouter une application"
 	}
+	delete = {
+		_: "Supprimer",
+		user: "Supprimer un utilisateur",
+		application: "Supprimer une application"
+	}
 	dashboard = "Panneau d'administration"
 	users = "Utilisateurs"
 	my_applications = "Mes Applications"
 	settings = "Paramètres"
 	language = "Langue"
 	update = "Modifier"
-	delete = "Supprimer"
 	english = "Anglais"
 	french = "Français"
 	error = "Erreur"
@@ -36,4 +40,12 @@ export class LangFr extends Lang {
 	save = "Enregistrer"
 	download_apk = "Télécharger le fichier apk"
 	register_success = "Inscription réussie! Veuillez vous connecter"
+	cancel = "Annuler"
+	id = "Id"
+	name = "Nom"
+	hash = "Hash"
+	comment = "Commentaire"
+	status = "Statut"
+	actions = "Actions"
+	applications_empty = "Vous n'avez aucune application"
 }
