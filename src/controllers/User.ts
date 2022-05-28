@@ -13,14 +13,15 @@ export class UserController {
     private readonly PASSWORD_REGEX = /^(?=.*\d).{4,12}$/
 
     public readonly login: (req: Request, res: Response) => void = (req: Request, res: Response) => {
-        const username = req.body.username
-        const password = req.body.password
 
         if (req.body.username == null || req.body.password == null) {
             return res.status(500).json({
                 error: "Paramètres manquants"
             })
         }
+
+        const username = req.body.username
+        const password = req.body.password
 
         async.waterfall([
             (done: any) => {

@@ -69,8 +69,7 @@ User.init({
   }
 }, {
   timestamps: true,
-  sequelize: new Config().sequelize,
-  paranoid: true
+  sequelize: new Config().sequelize
 })
 
 User.hasMany(Application)

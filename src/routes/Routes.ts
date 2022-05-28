@@ -3,6 +3,8 @@ import { UserController } from "../controllers/User"
 import { ApplicationController } from "../controllers/Application"
 import Multer from "../middlewares/Multer"
 import JWTUtils from "../utils/JWTUtils"
+import * as path from 'path'
+import { Socket } from "socket.io"
 
 export class Routes {
 
@@ -15,10 +17,8 @@ export class Routes {
 
         //Default endpoint
         app.route('/api/' + this.version + '/')
-            .get((req: Request, res: Response) => {
-                res.status(200).json({
-                    message: 'Bienvenue sur notre api'
-                })
+            .get((req: Request, res: Response) => {       
+                res.status(200).sendFile(path.dirname(path.dirname(__dirname)) + '/public/index.html'.replace('/', path.sep))
             })
 
         //User endpoints
@@ -33,8 +33,10 @@ export class Routes {
             .get(this.userController.get)
 
         app.route('/api/' + this.version + '/users/:userId/applications')
+            .get(this.applicationController.get)
             .post((req: Request, res: Response, next: NextFunction) => {
 
+                //Middleware for some verification before the Multer middleware
                 const authorization = req.headers.authorization
                 const userId = JWTUtils.getUserFromToken(authorization)
 
@@ -44,14 +46,13 @@ export class Routes {
 
                 if (Number.isNaN(targetUserId) || targetUserId <= 0 || userId !== targetUserId) return res.status(400).json({ error: 'id de l\'utilisateur invalide' })
 
-                //Multer.upload(targetUserId).single('file')
-
                 next()
-            }, Multer.upload().single('file'), this.applicationController.add)
+            }, Multer.makeMulterUploadMiddleware(Multer.upload().single('file')), this.applicationController.add)
 
         app.route('/api/' + this.version + '/users/:userId/applications/:applicationId')
             .put(this.applicationController.update)
             .delete(this.applicationController.delete)
+            .post(this.applicationController.verify)
 
 
         //Application endpoints

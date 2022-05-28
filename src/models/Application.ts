@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional } from 'sequelize'
+import { DataTypes, InstanceDestroyOptions, Model, Optional } from 'sequelize'
 import Config from '../config/database/Config'
 
 interface ApplicationAttributes {
@@ -55,6 +55,5 @@ export default class Application extends Model<ApplicationAttributes, Applicatio
     }
   }, {
     timestamps: true,
-    sequelize: new Config().sequelize,
-    paranoid: true
+    sequelize: new Config().sequelize
   })

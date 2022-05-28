@@ -5,6 +5,7 @@ class Server {
     private readonly app: App
     private readonly port: string | number
 
+
     constructor(){
         dotenv.config()
         this.port = process.env.PORT || 8001
@@ -12,9 +13,11 @@ class Server {
     }
 
     public serve = () => {
-        this.app.express.listen(this.port, () => {
+
+        this.app.app.listen(this.port, () => {
             console.log('Express server listening on port ' + this.port)
         })
+        
     }
 }
 
