@@ -33,7 +33,7 @@ export default class Login extends Authentication {
 			})
 				.catch(error => {
 					console.log(error)
-					this.setState({ notification: { isActive: true, status: 'danger', text: error.response.data.error } })
+					this.setState({ notification: { isActive: true, status: 'danger', text: error.response.data.error }})
 				})
 				.finally(() => {
 					this.setState({ isLoading: false })

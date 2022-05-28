@@ -1,5 +1,5 @@
 import React from "react"
-import { Button, Col, Row, Table } from "react-bootstrap"
+import { Button, Table } from "react-bootstrap"
 import { FaDownload, FaHeart, FaPencilAlt, FaPlus, FaTrash } from 'react-icons/fa'
 import API from "../../modules/api/API"
 import Crypto from "../../modules/crypto/Crypto"
@@ -8,6 +8,7 @@ import Toast from "../Toats"
 import AddApplication from "./AddApplication"
 import DeleteApplication from "./DeleteApplication"
 import EditApplication from "./EditApplication"
+import socketIOClient from "socket.io-client"
 
 export type Application = {
 	id: string | number
@@ -19,6 +20,7 @@ export type Application = {
 
 export interface MainProps extends PageProps {
 	applications: Application[]
+	onUpdate: () => void
 }
 
 export interface MainState extends PageState {
@@ -64,23 +66,63 @@ export default class Main extends React.Component<MainProps, MainState> {
 
 	}
 
+	componentDidMount = () => {
+		// const socket = socketIOClient('http://localhost:8000')
+		
+		// socket.on('fromApi', (data) => {
+		// 	console.log(data)
+		// })
+		//socket.emit('fromClient', 'client message')
+	}
+
 	private readonly addApplication = (form: FormData) => {
 		API.addApplication(form)
 			.then(value => {
-				console.log(value)
+				this.setState({ notification: { isActive: true, text: value.data.message, status: 'success' }})
+				this.props.onUpdate()
 			})
 			.catch(error => {
 				console.log(error)
+				this.setState({ notification: { isActive: true, text: error.error || error.response.data.message, status: 'danger' } })
 			})
-		//.finally(() => this.setState({ addApplicationModalShowed: false }))
+			.finally(() => this.setState({ addApplicationModalShowed: false }))
 	}
 
 	private readonly deleteApplication = () => {
-
+		API.deleteApplication(this.state.deleteApplicationModal.id)
+			.then(value => {
+				this.setState({ notification: { isActive: true, text: value.data.message, status: 'success' } })
+				this.props.onUpdate()
+			})
+			.catch(error => {
+				console.log(error)
+				this.setState({ notification: { isActive: true, text: error.error || error.response.data.message, status: 'danger' } })
+			})
+			.finally(() => this.setState({ deleteApplicationModal: { isShowed: false, id: '' } }))
 	}
 
-	private readonly editApplication = () => {
-
+	private readonly editApplication = (form: FormData) => {
+		API.updateApplication(this.state.deleteApplicationModal.id, form)
+			.then(value => {
+				this.setState({ notification: { isActive: true, text: value.data.message, status: 'success' } })
+				this.props.onUpdate()
+			})
+			.catch(error => {
+				console.log(error)
+				this.setState({ notification: { isActive: true, text: error.error || error.response.data.message, status: 'danger' } })
+			})
+			.finally(() => this.setState({
+				editApplicationModal: {
+					isShowed: false,
+					application: {
+						id: '',
+						hash: '',
+						name: '',
+						status: '',
+						comment: ''
+					}
+				}
+			}))
 	}
 
 	private readonly download = (applicationId: string | number) => {
@@ -113,13 +155,16 @@ export default class Main extends React.Component<MainProps, MainState> {
 								this.state.applications.map((application: Application, index: number) => {
 									return <tr
 										key={Crypto.identifier(index)}
-										className={application.status === 'Sûre' ? 'bg-success' : application.status === 'En cours de vérification' ? 'bg-warning' : 'bg-danger'}
 									>
 										<td>{application.id}</td>
 										<td>{application.name}</td>
 										<td className={'text-break w-25'}>{application.hash}</td>
 										<td>{application.comment}</td>
-										<td>{application.status}</td>
+										<td
+											className={application.status === 'Sûre' ? 'text-success' : application.status === 'En cours de vérification' ? 'text-warning' : 'text-danger'}
+										>
+											{application.status}
+										</td>
 										<td style={{ width: '20%' }}>
 											<Button
 												variant="secondary"
@@ -210,7 +255,7 @@ export default class Main extends React.Component<MainProps, MainState> {
 				show={this.state.editApplicationModal.isShowed}
 				application={this.state.editApplicationModal.application}
 				vocabulary={this.props.vocabulary}
-				onSubmit={() => this.editApplication()}
+				onSubmit={form => this.editApplication(form)}
 				onClose={() => this.setState({
 					editApplicationModal: {
 						isShowed: false,

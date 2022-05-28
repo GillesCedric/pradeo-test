@@ -27,9 +27,18 @@ export default class Home extends React.Component<HomeProps, HomeState> {
 
 	readonly componentDidMount = () => {
 
-		//FIXME componentDisMount rendered twice
+		//FIXME componentDidMount rendered twice
+		this.getUserData()
+	}
+
+	private readonly getUserData = () => {
+
+		//re-initialization of the state
+		this.setState({ isLoading: true })
+
 		API.getAllForUser()
 			.then(value => {
+
 				this.setState({
 					isLoading: false,
 					applications: value.data.user.Applications,
@@ -44,6 +53,7 @@ export default class Home extends React.Component<HomeProps, HomeState> {
 			.catch(error => {
 				console.log(error)
 			})
+
 	}
 
 	render = () => {
@@ -57,6 +67,7 @@ export default class Home extends React.Component<HomeProps, HomeState> {
 			<Main
 				vocabulary={this.props.vocabulary}
 				applications={this.state.applications}
+				onUpdate={this.getUserData}
 			/>
 		</div>
 	}

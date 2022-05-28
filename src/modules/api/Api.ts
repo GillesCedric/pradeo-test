@@ -40,18 +40,26 @@ export default class API {
 		}})
 	}
 
-	public static readonly updateApplication:  (data: FormData) => Promise<any> = async (data: FormData) => {
+	public static readonly getApplication:  () => Promise<any> = async () => {
 		const {token, userId} = Crypto.decrypt(Cookies.get('user'))
 		const authorization = this.tokenPrefix + ' ' + token
-		return await axios.put(this.apiUrl + 'users/' + userId + "/applications", data, {headers: {
+		return await axios.get(this.apiUrl + 'users/' + userId + "/applications", {headers: {
 			authorization: authorization
 		}})
 	}
 
-	public static readonly deleteApplication:  () => Promise<any> = async () => {
+	public static readonly updateApplication:  (applicationId: string | number, data: FormData) => Promise<any> = async (applicationId: string | number, data: FormData) => {
 		const {token, userId} = Crypto.decrypt(Cookies.get('user'))
 		const authorization = this.tokenPrefix + ' ' + token
-		return await axios.delete(this.apiUrl + 'users/' + userId + "/applications", {headers: {
+		return await axios.put(this.apiUrl + 'users/' + userId + "/applications/" + applicationId, data, {headers: {
+			authorization: authorization
+		}})
+	}
+
+	public static readonly deleteApplication:  (applicationId: string | number) => Promise<any> = async (applicationId: string | number) => {
+		const {token, userId} = Crypto.decrypt(Cookies.get('user'))
+		const authorization = this.tokenPrefix + ' ' + token
+		return await axios.delete(this.apiUrl + 'users/' + userId + "/applications/" + applicationId, {headers: {
 			authorization: authorization
 		}})
 	}
