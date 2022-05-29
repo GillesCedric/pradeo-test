@@ -225,7 +225,7 @@ export class ApplicationController {
 
 		const hash = req.body.hash
 
-		if(hash == null) return res.status(400).json({error: "Paramètres manquants"})
+		if (hash === null) return res.status(400).json({ error: "Paramètres manquants" })
 
 		const authorization = req.headers.authorization
 		const userId = JWTUtils.getUserFromToken(authorization)
@@ -239,17 +239,12 @@ export class ApplicationController {
 
 		if (Number.isNaN(applicationId) || applicationId <= 0) return res.status(400).json({ error: 'id de l\'application invalide' })
 
-
-		if (req.body.name == null && req.body.comment == null) {
-			return res.status(500).json({
-				error: "Paramètres manquants"
-			})
-		}
+		let isVirus: boolean = null
 
 		async.waterfall([
 			(done: any) => {
 				Application.findOne({
-					where: {hash: hash}
+					where: { hash: hash }
 				})
 					.then((applicationFound: Application) => {
 						done(null, applicationFound)
@@ -261,28 +256,86 @@ export class ApplicationController {
 			}, (applicationFound: Application, done: any) => {
 				if (applicationFound) {
 					const virusToptalService = new VirusToptalApi(applicationFound.hash, targetUserId)
-					virusToptalService.verifyApplication()
-					// applicationFound.update({
-					// 	name: name,
-					// 	comment: comment
-					// })
-					// 	.then((applicationFound: Application) => {
-					// 		done(applicationFound)
-					// 	})
-					// 	.catch(error => {
-					// 		console.log(error)
-					// 		return res.status(500).json({ error: 'Impossible de vérifier l\'application' })
-					// 	})
+					virusToptalService.uploadApplication()
+						.then(() => {
+							virusToptalService.verifyApplication()
+								.then(value => {
+									console.log(value.data.data.attributes.status)
+									if (value.data.data.attributes.status === 'completed') {
+										isVirus = (value.data.data.attributes.stats.suspicious > 0 || value.data.data.attributes.stats.malicious > 0)
+									}
+									if (isVirus == null) {
+										console.log('fail ' + isVirus)
+										done(applicationFound)
+									} else {
+										console.log('pass ' + isVirus)
+										applicationFound.update({ status: isVirus ? 'Virus' : 'Sûre' })
+											.then((applicationFound: Application) => {
+												done(applicationFound)
+											})
+											.catch(error => {
+												console.log(error)
+												return res.status(500).json({ error: 'Impossible de vérifier l\'application' })
+											})
+									}
+								})
+								.catch(error => {
+									console.log(error)
+								})
+						})
+						.catch(error => {
+							console.log(error)
+						})
 				} else {
 					return res.status(500).json({ error: 'l\'id ne correspond à aucune application' })
 				}
 			}
 		], (applicationFound: Application) => {
 			if (applicationFound) {
-				return res.status(200).json({ message: 'Application modifié avec succès' })
+				return res.status(200).json({ message: isVirus == null ? 'Application non vérifié' : 'Application vérifié avec succès', isVerified: isVirus == null ? false : true })
 			} else {
 				return res.status(500).json({ error: 'Impossible de connecter l\'utilisateur' })
 			}
+		})
+
+	}
+
+	public readonly download: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+
+		const authorization = req.headers.authorization
+		const userId = JWTUtils.getUserFromToken(authorization)
+
+		if (userId < 0) return res.status(400).json({ error: 'Token invalide' })
+
+		const targetUserId = Number.parseInt(req.params.userId)
+		const applicationId = Number.parseInt(req.params.applicationId)
+
+		if (Number.isNaN(targetUserId) || targetUserId <= 0 || userId !== targetUserId) return res.status(400).json({ error: 'id de l\'utilisateur invalide' })
+
+		if (Number.isNaN(applicationId) || applicationId <= 0) return res.status(400).json({ error: 'id de l\'application invalide' })
+
+		async.waterfall([
+			(done: any) => {
+				Application.findByPk(applicationId)
+					.then((applicationFound: Application) => {
+						done(null, applicationFound)
+					})
+					.catch(error => {
+						console.log(error)
+						return res.status(500).json({ error: 'Impossible de vérifier l\'application' })
+					})
+			}, (applicationFound: Application, done: any) => {
+				if (applicationFound) {
+					done(applicationFound)
+				} else {
+					return res.status(500).json({ error: 'l\'id ne correspond à aucune application' })
+				}
+			}
+		], (applicationFound: Application) => {
+			const appName = applicationFound.name || applicationFound.hash
+			return res.download(process.env.APK_STORAGE.replace('/', path.sep) + userId + path.sep + applicationFound.hash + '.apk', appName + '.apk', (error) => {
+				if (error) console.log(error)
+			})
 		})
 
 	}

@@ -34,25 +34,13 @@ export class Routes {
 
         app.route('/api/' + this.version + '/users/:userId/applications')
             .get(this.applicationController.get)
-            .post((req: Request, res: Response, next: NextFunction) => {
-
-                //Middleware for some verification before the Multer middleware
-                const authorization = req.headers.authorization
-                const userId = JWTUtils.getUserFromToken(authorization)
-
-                if (userId < 0) return res.status(400).json({ error: 'Token invalide' })
-
-                const targetUserId = Number.parseInt(req.params.userId)
-
-                if (Number.isNaN(targetUserId) || targetUserId <= 0 || userId !== targetUserId) return res.status(400).json({ error: 'id de l\'utilisateur invalide' })
-
-                next()
-            }, Multer.makeMulterUploadMiddleware(Multer.upload().single('file')), this.applicationController.add)
+            .post(Multer.makeMulterUploadMiddleware(Multer.upload().single('file')), this.applicationController.add)
 
         app.route('/api/' + this.version + '/users/:userId/applications/:applicationId')
             .put(this.applicationController.update)
             .delete(this.applicationController.delete)
             .post(this.applicationController.verify)
+            .get(this.applicationController.download)
 
 
         //Application endpoints
