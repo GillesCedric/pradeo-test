@@ -31,7 +31,7 @@ export default class Home extends React.Component<HomeProps, HomeState> {
 		this.getUserData()
 	}
 
-	private readonly getUserData = () => {
+	private readonly getUserData = (isNew?: boolean) => {
 
 		//re-initialization of the state
 		this.setState({ isLoading: true })
@@ -47,6 +47,26 @@ export default class Home extends React.Component<HomeProps, HomeState> {
 						username: value.data.user.username,
 						avatar: value.data.user.avatar,
 						email: value.data.user.email
+					}
+				}, () => {
+					if (isNew) {
+						let newApplication = this.state.applications[0]
+						this.state.applications.forEach(application => {
+							if (application.id > newApplication.id) newApplication = application
+						})
+						let intervalId = setInterval(() => {
+							API.verifyApplication(newApplication.id, newApplication.hash)
+								.then(value => {
+									if(value.data.isVerified){
+										clearInterval(intervalId)
+										this.getUserData()
+									}
+								})
+								.catch(error => {
+									console.log(error)
+								})
+						}, 60000)
+
 					}
 				})
 			})
@@ -67,7 +87,7 @@ export default class Home extends React.Component<HomeProps, HomeState> {
 			<Main
 				vocabulary={this.props.vocabulary}
 				applications={this.state.applications}
-				onUpdate={this.getUserData}
+				onUpdate={(isNew) => this.getUserData(isNew)}
 			/>
 		</div>
 	}

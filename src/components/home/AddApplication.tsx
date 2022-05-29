@@ -57,7 +57,7 @@ export default class AddApplication extends React.Component<AddApplicationProps,
 					<Modal.Title>{this.props.vocabulary.add.application}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form ref={(form: HTMLFormElement | null) => this.form = form} encType=''>
+					<Form ref={(form: HTMLFormElement | null) => this.form = form} encType='multipart/form-data'>
 							<Form.Label>{this.props.vocabulary.download_apk}</Form.Label>
 							<Form.Control
 								type="file"

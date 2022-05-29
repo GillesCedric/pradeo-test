@@ -8,7 +8,7 @@ interface EditApplicationProps extends PageProps {
 	show: boolean
 	vocabulary: Lang
 	onClose: () => void
-	onSubmit: (form: FormData) => void
+	onSubmit: (name?: string, comment?: string) => void
 	onError: (error: string) => void
 	application: Application
 }
@@ -22,17 +22,19 @@ export default class EditApplication extends React.Component<EditApplicationProp
 		show: true
   }
 
-	private form: HTMLFormElement | undefined | null
+	private name: HTMLInputElement | null | undefined
+	private comment: HTMLTextAreaElement | null | undefined
 
 	private readonly handleSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		event.preventDefault()
 		event.stopPropagation()
 
-		if(this.form === null) return
-
-		const form = new FormData(this.form)
+		if(this.name === null && this.comment) return
 		
-		this.props.onSubmit(form)
+		const name = this.name?.value
+		const comment = this.comment?.value
+
+		this.props.onSubmit(name, comment)
 			
 	}
 
@@ -43,7 +45,7 @@ export default class EditApplication extends React.Component<EditApplicationProp
 					<Modal.Title>{this.props.vocabulary.add.application}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<Form ref={(form: HTMLFormElement | null) => this.form = form}>
+					<Form>
 							<Form.Label>{this.props.vocabulary.id}</Form.Label>
 							<Form.Control
 								type="text"
@@ -58,6 +60,7 @@ export default class EditApplication extends React.Component<EditApplicationProp
 							/>
 							<Form.Label>{this.props.vocabulary.name}</Form.Label>
 							<Form.Control
+								ref={(ref: HTMLInputElement | null) => this.name = ref}
 								type="text"
 								name="name"
 								defaultValue={this.props.application.name}
@@ -70,6 +73,7 @@ export default class EditApplication extends React.Component<EditApplicationProp
 							/>
 							<Form.Label>{this.props.vocabulary.comment}</Form.Label>
 							<Form.Control
+								ref={(ref: HTMLTextAreaElement | null) => this.comment = ref}
 								as={"textarea"}
 								rows={4}
 								name="comment"

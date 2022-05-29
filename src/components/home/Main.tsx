@@ -9,6 +9,7 @@ import AddApplication from "./AddApplication"
 import DeleteApplication from "./DeleteApplication"
 import EditApplication from "./EditApplication"
 import socketIOClient from "socket.io-client"
+import fileDownload from 'js-file-download'
 
 export type Application = {
 	id: string | number
@@ -20,7 +21,7 @@ export type Application = {
 
 export interface MainProps extends PageProps {
 	applications: Application[]
-	onUpdate: () => void
+	onUpdate: (isNew?: boolean) => void
 }
 
 export interface MainState extends PageState {
@@ -68,7 +69,7 @@ export default class Main extends React.Component<MainProps, MainState> {
 
 	componentDidMount = () => {
 		// const socket = socketIOClient('http://localhost:8000')
-		
+
 		// socket.on('fromApi', (data) => {
 		// 	console.log(data)
 		// })
@@ -78,8 +79,9 @@ export default class Main extends React.Component<MainProps, MainState> {
 	private readonly addApplication = (form: FormData) => {
 		API.addApplication(form)
 			.then(value => {
-				this.setState({ notification: { isActive: true, text: value.data.message, status: 'success' }})
-				this.props.onUpdate()
+				console.log(value)
+				this.setState({ notification: { isActive: true, text: value.data.message, status: 'success' } })
+				this.props.onUpdate(true)
 			})
 			.catch(error => {
 				console.log(error)
@@ -101,8 +103,8 @@ export default class Main extends React.Component<MainProps, MainState> {
 			.finally(() => this.setState({ deleteApplicationModal: { isShowed: false, id: '' } }))
 	}
 
-	private readonly editApplication = (form: FormData) => {
-		API.updateApplication(this.state.deleteApplicationModal.id, form)
+	private readonly editApplication = (name?: string, comment?: string) => {
+		API.updateApplication(this.state.editApplicationModal.application.id, name, comment)
 			.then(value => {
 				this.setState({ notification: { isActive: true, text: value.data.message, status: 'success' } })
 				this.props.onUpdate()
@@ -125,7 +127,14 @@ export default class Main extends React.Component<MainProps, MainState> {
 			}))
 	}
 
-	private readonly download = (applicationId: string | number) => {
+	private readonly download = (applicationId: string | number, fileName: string) => {
+		API.downloadApplication(applicationId)
+			.then(value => {
+				fileDownload(value.data, fileName + '.apk')
+			})
+			.catch(error => {
+				console.log(error)
+			})
 
 	}
 
@@ -197,7 +206,7 @@ export default class Main extends React.Component<MainProps, MainState> {
 											<Button
 												variant="success"
 												title={this.props.vocabulary.download_apk.split(' ')[0]}
-												onClick={() => this.download(application.id)}
+												onClick={() => this.download(application.id, application.name || application.hash)}
 											>
 												<FaDownload />
 											</Button>
@@ -255,7 +264,7 @@ export default class Main extends React.Component<MainProps, MainState> {
 				show={this.state.editApplicationModal.isShowed}
 				application={this.state.editApplicationModal.application}
 				vocabulary={this.props.vocabulary}
-				onSubmit={form => this.editApplication(form)}
+				onSubmit={(name, comment) => this.editApplication(name, comment)}
 				onClose={() => this.setState({
 					editApplicationModal: {
 						isShowed: false,
