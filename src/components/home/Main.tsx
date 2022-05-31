@@ -8,9 +8,15 @@ import Toast from "../Toats"
 import AddApplication from "./AddApplication"
 import DeleteApplication from "./DeleteApplication"
 import EditApplication from "./EditApplication"
-import socketIOClient from "socket.io-client"
 import fileDownload from 'js-file-download'
 
+/**
+ * @type Application
+ * @author Gilles Cédric
+ * @description this type is used to represent the Application model
+ * @exports
+ * @since 31/05/2022
+ */
 export type Application = {
 	id: string | number
 	hash: string
@@ -19,11 +25,27 @@ export type Application = {
 	status: string
 }
 
+/**
+ * @interface MainProps
+ * @author Gilles Cédric
+ * @description this interface represent the props definition for the Main component
+ * @extends PageProps
+ * @exports
+ * @since 31/05/2022
+ */
 export interface MainProps extends PageProps {
 	applications: Application[]
 	onUpdate: (isNew?: boolean) => void
 }
 
+/**
+ * @interface MainState
+ * @author Gilles Cédric
+ * @description this interface represent the state definition fot the Main component
+ * @extends PageState
+ * @exports
+ * @since 31/05/2022
+ */
 export interface MainState extends PageState {
 	applications: Application[]
 	addApplicationModalShowed: boolean
@@ -37,8 +59,21 @@ export interface MainState extends PageState {
 	}
 }
 
+/**
+ * @class Main
+ * @author Gilles Cédric
+ * @description this class is used to represent the Main component
+ * @extends React.Component
+ * @exports
+ * @default
+ * @since 31/05/2022
+ */
 export default class Main extends React.Component<MainProps, MainState> {
 
+	/**
+	 * @constructor
+	 * @param {MainProps} props the props of the application
+	 */
 	constructor(props: MainProps) {
 		super(props)
 		this.state = {
@@ -67,16 +102,15 @@ export default class Main extends React.Component<MainProps, MainState> {
 
 	}
 
-	componentDidMount = () => {
-		// const socket = socketIOClient('http://localhost:8000')
-
-		// socket.on('fromApi', (data) => {
-		// 	console.log(data)
-		// })
-		//socket.emit('fromClient', 'client message')
-	}
-
-	private readonly addApplication = (form: FormData) => {
+	/**
+	 * @method addApplication
+	 * @description the method is used to add an application to the API and handle the response
+	 * @param {FormData} form the FormData instance which containing the application file
+	 * @returns {void}
+	 * @private
+	 * @readonly
+	 */
+	private readonly addApplication = (form: FormData): void => {
 		API.addApplication(form)
 			.then(value => {
 				console.log(value)
@@ -90,7 +124,14 @@ export default class Main extends React.Component<MainProps, MainState> {
 			.finally(() => this.setState({ addApplicationModalShowed: false }))
 	}
 
-	private readonly deleteApplication = () => {
+	/**
+	 * @method deleteApplication
+	 * @description the method is used to delete an application from the API and handle the response
+	 * @returns {void}
+	 * @private
+	 * @readonly
+	 */
+	private readonly deleteApplication = (): void => {
 		API.deleteApplication(this.state.deleteApplicationModal.id)
 			.then(value => {
 				this.setState({ notification: { isActive: true, text: value.data.message, status: 'success' } })
@@ -103,7 +144,16 @@ export default class Main extends React.Component<MainProps, MainState> {
 			.finally(() => this.setState({ deleteApplicationModal: { isShowed: false, id: '' } }))
 	}
 
-	private readonly editApplication = (name?: string, comment?: string) => {
+	/**
+	 * @method editApplication
+	 * @description the method is used to add an application to the API and handle the response
+	 * @param {string} name the name of the application
+	 * @param {string | undefined} comment the comment of the application
+ 	 * @returns {void}
+	 * @private
+	 * @readonly
+	 */
+	private readonly editApplication = (name?: string, comment?: string): void => {
 		API.updateApplication(this.state.editApplicationModal.application.id, name, comment)
 			.then(value => {
 				this.setState({ notification: { isActive: true, text: value.data.message, status: 'success' } })
@@ -127,6 +177,15 @@ export default class Main extends React.Component<MainProps, MainState> {
 			}))
 	}
 
+	/**
+	 * @method download
+	 * @description the method is used to add an application to the API and handle the response
+	 * @param {string | number} applicationId the id of the application
+	 * @param {string} fileName the name of the application
+	 * @returns {void}
+	 * @private
+	 * @readonly
+	 */
 	private readonly download = (applicationId: string | number, fileName: string) => {
 		API.downloadApplication(applicationId)
 			.then(value => {
@@ -138,6 +197,10 @@ export default class Main extends React.Component<MainProps, MainState> {
 
 	}
 
+	/**
+	 * @override
+	 * @returns {JSX.Element}
+	 */
 	render = () => {
 		return <main>
 			<header>

@@ -1,9 +1,16 @@
 import React from "react"
 import { Button, Form, Modal } from "react-bootstrap"
 import { Lang } from "../../modules/language/lang"
-import { PageProps, PageState } from "../../pages/Page"
+import { PageProps } from "../../pages/Page"
 import { Application } from "./Main"
 
+/**
+ * @interface EditApplicationProps
+ * @author Gilles Cédric
+ * @description this interface represent the props definition for the EditApplication component
+ * @extends PageProps
+ * @since 31/05/2022
+ */
 interface EditApplicationProps extends PageProps {
 	show: boolean
 	vocabulary: Lang
@@ -13,8 +20,22 @@ interface EditApplicationProps extends PageProps {
 	application: Application
 }
 
+/**
+ * @class EditApplication
+ * @author Gilles Cédric
+ * @description this class is used to represent the EditApplication component
+ * @extends React.Component
+ * @exports
+ * @default
+ * @since 31/05/2022
+ */
 export default class EditApplication extends React.Component<EditApplicationProps>{
 
+	/**
+	 * @property defaultProps
+	 * @static
+	 * @description the default props of the component
+	 */
 	static defaultProps = {
     onSubmit: () => {},
 		onClose: () => {},
@@ -22,10 +43,31 @@ export default class EditApplication extends React.Component<EditApplicationProp
 		show: true
   }
 
+	/**
+	 * @property name
+	 * @description the reference for the name application input
+	 * @private
+	 * @type {HTMLInputElement | null | undefined}
+	 */
 	private name: HTMLInputElement | null | undefined
+
+	/**
+	 * @property comment
+	 * @description the reference for the comment application input
+	 * @private
+	 * @type {HTMLInputElement | null | undefined}
+	 */
 	private comment: HTMLTextAreaElement | null | undefined
 
-	private readonly handleSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+	/**
+	 * @method handleSubmit
+	 * @description this method is used to handle the submit event of the form
+	 * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} event the submit event
+	 * @private
+	 * @readonly
+	 * @returns {void}
+	 */
+	private readonly handleSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
 		event.preventDefault()
 		event.stopPropagation()
 
@@ -38,7 +80,11 @@ export default class EditApplication extends React.Component<EditApplicationProp
 			
 	}
 
-	render = () => {
+	/**
+	 * @override
+	 * @returns {JSX.Element}
+	 */
+	render = (): JSX.Element => {
 		return <>
 			<Modal show={this.props.show} onHide={() => this.props.onClose()}>
 				<Modal.Header closeButton>

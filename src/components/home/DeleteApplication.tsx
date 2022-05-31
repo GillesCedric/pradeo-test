@@ -1,8 +1,15 @@
 import React from "react"
-import { Button, Form, Modal } from "react-bootstrap"
+import { Button, Modal } from "react-bootstrap"
 import { Lang } from "../../modules/language/lang"
 import { PageProps } from "../../pages/Page"
 
+/**
+ * @interface DeleteApplicationProps
+ * @author Gilles Cédric
+ * @description this interface represent the props definition for the DeleteApplication component
+ * @extends PageProps
+ * @since 31/05/2022
+ */
 interface DeleteApplicationProps extends PageProps {
 	show: boolean
 	vocabulary: Lang
@@ -11,8 +18,22 @@ interface DeleteApplicationProps extends PageProps {
 	onError: (error: string) => void
 }
 
+/**
+ * @class DeleteApplication
+ * @author Gilles Cédric
+ * @description this class is used to represent the DeleteApplication component
+ * @extends React.Component
+ * @exports
+ * @default
+ * @since 31/05/2022
+ */
 export default class DeleteApplication extends React.Component<DeleteApplicationProps>{
 
+	/**
+	 * @property defaultProps
+	 * @static
+	 * @description the default props of the component
+	 */
 	static defaultProps = {
     onSubmit: () => {},
 		onClose: () => {},
@@ -20,7 +41,11 @@ export default class DeleteApplication extends React.Component<DeleteApplication
 		show: true
   }
 
-	render = () => {
+	/**
+	 * @override
+	 * @returns {JSX.Element}
+	 */
+	render = (): JSX.Element => {
 		return <>
 			<Modal show={this.props.show} onHide={() => this.props.onClose()}>
 				<Modal.Header closeButton>

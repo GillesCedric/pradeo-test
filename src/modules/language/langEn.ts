@@ -1,7 +1,18 @@
 import { Lang } from "./lang"
 
+/**
+ * @class LangEn
+ * @author Gilles Cédric
+ * @description this class is the En implementation of the application language
+ * @exports
+ * @extends Lang
+ * @since 21/05/2022
+ */
 export class LangEn extends Lang {
 
+	/**
+	 * @constructor
+	 */
 	constructor() {
 		super("en", "Anglais")
 	}

@@ -5,9 +5,26 @@ import Toast from '../Toats'
 import API from '../../modules/api/API'
 import { Navigate } from 'react-router-dom'
 
+/**
+ * @class Register
+ * @author Gilles Cédric
+ * @description this class is used to represent the Register component
+ * @extends React.Component
+ * @exports
+ * @default
+ * @since 31/05/2022
+ */
 export default class Register extends Authentication {
 
-	protected handleSubmit: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void = (event: React.MouseEvent) => {
+	/**
+	 * @method handleSubmit
+	 * @description this method is used to handle the submit event of the form
+	 * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} event the submit event
+	 * @protected
+	 * @readonly
+	 * @returns {void}
+	 */
+	protected readonly handleSubmit: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void = (event: React.MouseEvent): void => {
 		event.preventDefault()
 		event.stopPropagation()
 
@@ -38,7 +55,11 @@ export default class Register extends Authentication {
 		}
 	}
 
-	render() {
+	/**
+	 * @override
+	 * @returns {JSX.Element}
+	 */
+	render = (): JSX.Element => {
 		if (this.state.redirect) return <Navigate to={'/authenticate'} />
 
 		return <>

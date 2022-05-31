@@ -2,23 +2,84 @@ import axios from "axios"
 import Cookies from "../cookies/Cookies"
 import Crypto from "../crypto/Crypto"
 
+/**
+ * @class API
+ * @author Gilles Cédric
+ * @description this class is used to manage the request and the response with the API
+ * @exports
+ * @default
+ * @since 21/05/2022
+ */
 export default class API {
-	private static readonly apiUrl = 'http://localhost:8000/api/v1/'
-	private static readonly tokenPrefix = 'Bearer'
 
-	public static readonly getAllUsers: () => Promise<any> = async () => {
+	/**
+	 * @property apiUrl
+	 * @description the url of the API
+	 * @private
+	 * @static
+	 * @readonly
+	 * @type {string}
+	 */
+	private static readonly apiUrl: string = 'http://localhost:8000/api/v1/'
+
+	/**
+	 * @property apiUrl
+	 * @description the url of the API
+	 * @private
+	 * @static
+	 * @readonly
+	 * @type {string}
+	 */
+	private static readonly tokenPrefix: string = 'Bearer'
+
+	/**
+	 * @method getAllUsers
+	 * @description this method is used to get all the users from the API
+	 * @public
+	 * @static
+	 * @readonly
+	 * @returns {Promise<any>} the response from the API
+	 */
+	public static readonly getAllUsers: () => Promise<any> = async (): Promise<any> => {
 		return await axios.get(this.apiUrl + 'users')
 	}
 
-	public static readonly login: (data: any) => Promise<any> = async (data: any) => {
+	/**
+	 * @method login
+	 * @description this method is used to login the application
+	 * @param {any} data the login credentials to send to the API
+	 * @public
+	 * @static
+	 * @readonly
+	 * @returns {Promise<any>} the response from the API
+	 */
+	public static readonly login: (data: any) => Promise<any> = async (data: any): Promise<any> => {
 		return await axios.post(this.apiUrl + 'users/login', data)
 	}
 
-	public static readonly register: (data: any) => Promise<any> = async (data: any) => {
+	/**
+	 * @method register
+	 * @description this method is used to register in the application
+	 * @param {any} data the registers data to send to the API
+	 * @public
+	 * @static
+	 * @readonly
+	 * @returns {Promise<any>} the response from the API
+	 */
+	public static readonly register: (data: any) => Promise<any> = async (data: any): Promise<any> => {
 		return await axios.post(this.apiUrl + 'users/register', data)
 	}
 
-	public static readonly getAllForUser: (id?: number) => Promise<any> = async (id?: number) => {
+	/**
+	 * @method getAllFroUser
+	 * @description this method is used to get all information's about a specific user
+	 * @param {number} id the id of the user
+	 * @public
+	 * @static
+	 * @readonly
+	 * @returns {Promise<any>} the response from the API
+	 */
+	public static readonly getAllForUser: (id?: number) => Promise<any> = async (id?: number): Promise<any> => {
 		const { token, userId } = Crypto.decrypt(Cookies.get('user'))
 		if (id === undefined) id = userId
 		const authorization = this.tokenPrefix + ' ' + token
@@ -29,11 +90,28 @@ export default class API {
 		})
 	}
 
-	public static readonly getAllApplications: () => Promise<any> = async () => {
+	/**
+	 * @method getAllApplications
+	 * @description this method is used to get all application's in API
+	 * @public
+	 * @static
+	 * @readonly
+	 * @returns {Promise<any>} the response from the API
+	 */
+	public static readonly getAllApplications: () => Promise<any> = async (): Promise<any> => {
 		return await axios.get(this.apiUrl + 'applications')
 	}
 
-	public static readonly addApplication: (data: FormData) => Promise<any> = async (data: FormData) => {
+	/**
+	 * @method addApplication
+	 * @description this method is used to get all information's about a specific user
+	 * @param {FormData} data the FormData instance witch containing the file
+	 * @public
+	 * @static
+	 * @readonly
+	 * @returns {Promise<any>} the response from the API
+	 */
+	public static readonly addApplication: (data: FormData) => Promise<any> = async (data: FormData): Promise<any> => {
 		const { token, userId } = Crypto.decrypt(Cookies.get('user'))
 		const authorization = this.tokenPrefix + ' ' + token
 		return await axios.post(this.apiUrl + 'users/' + userId + "/applications", data, {
@@ -44,7 +122,15 @@ export default class API {
 		})
 	}
 
-	public static readonly getApplication: () => Promise<any> = async () => {
+	/**
+	 * @method getApplication
+	 * @description this method is used to get all the application's about a specific user
+	 * @public
+	 * @static
+	 * @readonly
+	 * @returns {Promise<any>} the response from the API
+	 */
+	public static readonly getApplication: () => Promise<any> = async (): Promise<any> => {
 		const { token, userId } = Crypto.decrypt(Cookies.get('user'))
 		const authorization = this.tokenPrefix + ' ' + token
 		return await axios.get(this.apiUrl + 'users/' + userId + "/applications", {
@@ -54,7 +140,18 @@ export default class API {
 		})
 	}
 
-	public static readonly updateApplication: (applicationId: string | number, name?: string, comment?: string) => Promise<any> = async (applicationId: string | number, name?: string, comment?: string) => {
+	/**
+	 * @method updateApplication
+	 * @description this method is used to update an application
+	 * @param {string | number} applicationId the id of the application
+	 * @param {string | undefined} name the name of the application
+	 * @param {string | undefined} comment the comment of the application
+	 * @public
+	 * @static
+	 * @readonly
+	 * @returns {Promise<any>} the response from the API
+	 */
+	public static readonly updateApplication: (applicationId: string | number, name?: string, comment?: string) => Promise<any> = async (applicationId: string | number, name?: string, comment?: string): Promise<any> => {
 		const { token, userId } = Crypto.decrypt(Cookies.get('user'))
 		const authorization = this.tokenPrefix + ' ' + token
 		return await axios.put(this.apiUrl + 'users/' + userId + "/applications/" + applicationId, { name, comment }, {
@@ -64,7 +161,16 @@ export default class API {
 		})
 	}
 
-	public static readonly deleteApplication: (applicationId: string | number) => Promise<any> = async (applicationId: string | number) => {
+	/**
+	 * @method deleteApplication
+	 * @description this method is used to delete a specific application
+	 * @param {string | number} applicationId the id of the user
+	 * @public
+	 * @static
+	 * @readonly
+	 * @returns {Promise<any>} the response from the API
+	 */
+	public static readonly deleteApplication: (applicationId: string | number) => Promise<any> = async (applicationId: string | number): Promise<any> => {
 		const { token, userId } = Crypto.decrypt(Cookies.get('user'))
 		const authorization = this.tokenPrefix + ' ' + token
 		return await axios.delete(this.apiUrl + 'users/' + userId + "/applications/" + applicationId, {
@@ -74,7 +180,17 @@ export default class API {
 		})
 	}
 
-	public static readonly verifyApplication: (applicationId: string | number, hash: string) => Promise<any> = async (applicationId: string | number, hash: string) => {
+	/**
+	 * @method verifyApplication
+	 * @description this method is used to verify a specific application
+	 * @param {string | number} applicationId the id of the application
+	 * @param {string} hash the hash of the application
+	 * @public
+	 * @static
+	 * @readonly
+	 * @returns {Promise<any>} the response from the API
+	 */
+	public static readonly verifyApplication: (applicationId: string | number, hash: string) => Promise<any> = async (applicationId: string | number, hash: string): Promise<any> => {
 		const { token, userId } = Crypto.decrypt(Cookies.get('user'))
 		const authorization = this.tokenPrefix + ' ' + token
 		return await axios.post(this.apiUrl + 'users/' + userId + "/applications/" + applicationId,{hash: hash},
@@ -85,7 +201,16 @@ export default class API {
 			})
 	}
 
-	public static readonly downloadApplication: (applicationId: string | number) => Promise<any> = async (applicationId: string | number) => {
+	/**
+	 * @method downloadApplication
+	 * @description this method is used to download a specific application from the API
+	 * @param {string | number} applicationId the id of the application
+	 * @public
+	 * @static
+	 * @readonly
+	 * @returns {Promise<any>} the response from the API
+	 */
+	public static readonly downloadApplication: (applicationId: string | number) => Promise<any> = async (applicationId: string | number): Promise<any> => {
 		const { token, userId } = Crypto.decrypt(Cookies.get('user'))
 		const authorization = this.tokenPrefix + ' ' + token
 		return await axios.get(this.apiUrl + 'users/' + userId + "/applications/" + applicationId, {

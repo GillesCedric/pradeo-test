@@ -2,8 +2,22 @@ import React from "react"
 import { PageProps } from "./Page"
 import '../styles/404.scss';
 
+/**
+ * @class NotFound
+ * @author Gilles Cédric
+ * @description this class is used to represent the NotFound page
+ * @extends React.Component
+ * @exports
+ * @default
+ * @since 30/05/2022
+ */
 export default class NotFound extends React.Component<PageProps> {
-	render = () => {
+
+	/**
+	 * @override
+	 * @returns {JSX.Element}
+	 */
+	render = (): JSX.Element => {
 		return <>
 			<div className="main">
 				<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="470" height="290" viewBox="0 0 470 290">

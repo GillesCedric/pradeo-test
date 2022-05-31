@@ -1,7 +1,14 @@
-import React from "react";
-import { Toast as _Toast, ToastContainer } from "react-bootstrap";
-import { ToastPosition } from "react-bootstrap/esm/ToastContainer";
-import { Lang } from "../modules/language/lang";
+import React from "react"
+import { Toast as _Toast, ToastContainer } from "react-bootstrap"
+import { ToastPosition } from "react-bootstrap/esm/ToastContainer"
+import { Lang } from "../modules/language/lang"
+
+/**
+ * @interface PropsToast
+ * @author Gilles Cédric
+ * @description this class is the props definition for the Toast component
+ * @since 21/05/2022
+ */
 interface PropsToast {
 	icon?: React.ReactNode
 	variant: string
@@ -14,15 +21,33 @@ interface PropsToast {
 	onClose: () => void
 }
 
+/**
+ * @class Toast
+ * @author Gilles Cédric
+ * @description this class is used to represent the toast component
+ * @extends React.Component
+ * @exports
+ * @default
+ * @since 31/05/2022
+ */
 export default class Toast extends React.Component<PropsToast>{
 
+	/**
+	 * @property defaultProps
+	 * @static
+	 * @description the default props of the component
+	 */
 	static defaultProps = {
     onClose: () => {},
 		position: 'bottom-end',
 		show: true
   }
 
-	render = () => {
+	/**
+	 * @override
+	 * @returns {JSX.Element}
+	 */
+	render = (): JSX.Element => {
 		return <ToastContainer className="p-3" position={this.props.position} style={{position: 'absolute'}}>
 			<_Toast
 				className="d-inline-block m-1"

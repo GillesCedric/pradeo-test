@@ -1,8 +1,15 @@
-import React from "react";
+import React from "react"
 import { ProSidebar, SidebarHeader, SidebarContent, Menu, MenuItem, SubMenu, SidebarFooter } from "react-pro-sidebar"
 import { FaAdjust, FaFolderPlus, FaGithub, FaLanguage, FaList, FaMobileAlt, FaTachometerAlt, FaUserPlus, FaUsers } from 'react-icons/fa'
-import { PageProps } from "../../pages/Page";
+import { PageProps } from "../../pages/Page"
 
+/**
+ * @type User
+ * @author Gilles Cédric
+ * @description this type is used to represent the User model
+ * @exports
+ * @since 31/05/2022
+ */
 export type User = {
 	id: string
 	username: string
@@ -10,14 +17,35 @@ export type User = {
 	avatar?: string
 }
 
+/**
+ * @interface SidebarProps
+ * @author Gilles Cédric
+ * @description this interface represent the props definition for the Sidebar component
+ * @extends PageProps
+ * @exports
+ * @since 31/05/2022
+ */
 export interface SidebarProps extends PageProps {
 	user?: User
 	updater: (index: number) => void
 }
 
+/**
+ * @class Sidebar
+ * @author Gilles Cédric
+ * @description this class is used to represent the Sidebar component
+ * @extends React.Component
+ * @exports
+ * @default
+ * @since 31/05/2022
+ */
 export default class Sidebar extends React.Component<SidebarProps> {
 
-	render = () => {
+	/**
+	 * @override
+	 * @returns {JSX.Element}
+	 */
+	render = (): JSX.Element => {
 		return <ProSidebar
 			breakPoint="md"
 		>

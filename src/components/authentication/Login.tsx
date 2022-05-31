@@ -7,11 +7,26 @@ import Cookies from '../../modules/cookies/Cookies'
 import { Navigate } from 'react-router-dom'
 import Crypto from '../../modules/crypto/Crypto'
 
-
+/**
+ * @class Login
+ * @author Gilles Cédric
+ * @description this class is used to represent the Login component
+ * @extends React.Component
+ * @exports
+ * @default
+ * @since 31/05/2022
+ */
 export default class Login extends Authentication {
 
-
-	protected handleSubmit: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void = (event: React.MouseEvent) => {
+	/**
+	 * @method handleSubmit
+	 * @description this method is used to handle the submit event of the form
+	 * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} event the submit event
+	 * @protected
+	 * @readonly
+	 * @returns {void}
+	 */
+	protected readonly handleSubmit: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void = (event: React.MouseEvent): void => {
 
 		event.preventDefault()
 		event.stopPropagation()
@@ -33,7 +48,7 @@ export default class Login extends Authentication {
 			})
 				.catch(error => {
 					console.log(error)
-					this.setState({ notification: { isActive: true, status: 'danger', text: error.response.data.error }})
+					this.setState({ notification: { isActive: true, status: 'danger', text: error.response.data.error } })
 				})
 				.finally(() => {
 					this.setState({ isLoading: false })
@@ -44,7 +59,11 @@ export default class Login extends Authentication {
 	}
 
 
-	render() {
+	/**
+	 * @override
+	 * @returns {JSX.Element}
+	 */
+	render = (): JSX.Element => {
 		if (this.state.redirect) return <Navigate to={'/dashboard'} />
 
 		return <>

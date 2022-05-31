@@ -1,17 +1,65 @@
 import _Crypto from 'crypto-js'
 
+/**
+ * @class Crypto
+ * @author Gilles Cédric
+ * @description this class is used for the the encryption and decryption in the application
+ * @exports
+ * @default
+ * @since 23/05/2022
+ */
 export default class Crypto {
 
+	/**
+	 * @property secret_key
+	 * @description the secret key of the application for all operations
+	 * @private
+	 * @static
+	 * @readonly
+	 * @type {string}
+	 */
 	private static readonly secret_key: string = "_p=/1#C>Mzi%5gkbFAamRh246.I(jiz/sow|rk9Z&tU5[}hve0F)AK2lX590WqUmPdAy#LZh){N^JR1H?v']s=RIE*!13-hF<mn.'SpaLQ~+9@d!o$`r#:qFX2vH6AE[>Bus*,.iw^tW}hn#Q_G)el=8Y:zfq`@~UBtZO-.3lg6T{w'>#-A]4}jQ(,P=RI8a;.v*:Cl?<-8Mc)y~WPS@7}>24T.fU+kwGL|1pj^Z8XHYT}xueK94k>[bMNI0lEuO|)prR3}9kg;y{P[$G5a&2N~0'v`G_Da|wULy[-xHZ$d]C<Pq#o4!t9{WgDv]bM_1VIk<du@haO;ES[yGYi#(%7PLT82hMn7tg3^D&6!s)*0I5p$-+"
 
+	/**
+	 * @property chars
+	 * @description all the chars characters that should be used for encryption and decryption
+	 * @private
+	 * @static
+	 * @readonly
+	 * @type {string[]}
+	 */
 	private static readonly chars: string[] = 'ABCDEFGHIJKMLNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='.split('')
+
+	/**
+	 * @property secret_key
+	 * @description the additional characters for encryption and decryption
+	 * @private
+	 * @static
+	 * @readonly
+	 * @type {string[]}
+	 */
 	private static readonly chars2: string[] = [
 		...this.chars,
 		'!', '§', '%', '&', '(', ')', '=', '?', '{', '[', ']', '}', '@', '€', '*', '+', '#', '>', '<', '|', ';', ','
 	]
 
-	private static readonly randomLength = 10
+	/**
+	 * @property secret_key
+	 * @description the length for the random string generator
+	 * @private
+	 * @static
+	 * @readonly
+	 * @type {number}
+	 */
+	private static readonly randomLength: number = 10
 
+	/**
+	 * @property secret_key
+	 * @description all the encryption and description method
+	 * @private
+	 * @static
+	 * @readonly
+	 */
 	public static readonly hash = {
 
 		/**
@@ -75,10 +123,11 @@ export default class Crypto {
 
 	/**
 	 * @function identifier
+	 * @description this __OBJECT__ is used to generate a random unique identifier
 	 * @param {string} suffix {''} s.e.
 	 * @param {number} length {10} the length of the word
 	 * @returns {string} the random identifier
 	 */
-	public  static readonly identifier = (suffix: string | number = '', length: number = this.randomLength): string => Date.now() + this.random(length) + suffix
+	public static readonly identifier = (suffix: string | number = '', length: number = this.randomLength): string => Date.now() + this.random(length) + suffix
 
 }

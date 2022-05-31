@@ -1,20 +1,60 @@
+/**
+ * @class Lang
+ * @author Gilles Cédric
+ * @description this class is the Lang component witch used to handle the languages of the application
+ * @abstract
+ * @exports
+ * @since 21/05/2022
+ */
 export abstract class Lang {
+
+	/**
+	 * @property _identifier
+	 * @description the identifier of the language (fr,en,de...)
+	 * @protected
+	 * @readonly
+	 * @type {string}
+	 */
 	protected readonly _identifier: string
+
+	/**
+	 * @property _name
+	 * @description the name of the language (français,anglais...)
+	 * @protected
+	 * @readonly
+	 * @type {string}
+	 */
 	protected readonly _name: string
 
+	/**
+	 * @constructor
+	 * @param {string} identifier the identifier of the language
+	 * @param {string} name the name of the language
+	 */
 	constructor(identifier: string, name: string) {
 		this._identifier = identifier
 		this._name = name
 	}
 
-	public get langName() : string {
+	/**
+	 * @method langName
+	 * @description the getter for the name property
+	 * @public
+	 * @returns {string} the name of the application
+	 */
+	public get langName(): string {
 		return this._name
 	}
 
-	public get identifier() : string {
+	/**
+	 * @method identifier
+	 * @description the getter for the identifier property
+	 * @public
+	 * @returns {string} the identifier of the application
+	 */
+	public get identifier(): string {
 		return this._name
 	}
-	
 
 	abstract readonly sign_in: string
 	abstract readonly username: string

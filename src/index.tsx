@@ -1,3 +1,9 @@
+/**
+ * @author Gilles Cédric
+ * @description the main file of the application
+ * @since 23/05/2022
+ */
+
 import React from 'react';
 import { CookiesProvider } from 'react-cookie';
 import ReactDOM from 'react-dom/client';
