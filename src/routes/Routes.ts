@@ -4,7 +4,6 @@ import { ApplicationController } from "../controllers/Application"
 import Multer from "../middlewares/Multer"
 import JWTUtils from "../utils/JWTUtils"
 import * as path from 'path'
-import { Socket } from "socket.io"
 
 export class Routes {
 
