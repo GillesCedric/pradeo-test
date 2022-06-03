@@ -8,7 +8,7 @@ import { PageProps } from "../../pages/Page"
  * @author Gilles Cédric
  * @description this type is used to represent the User model
  * @exports
- * @since 31/05/2022
+ * @since 23/05/2022
  */
 export type User = {
 	id: string
@@ -23,7 +23,7 @@ export type User = {
  * @description this interface represent the props definition for the Sidebar component
  * @extends PageProps
  * @exports
- * @since 31/05/2022
+ * @since 23/05/2022
  */
 export interface SidebarProps extends PageProps {
 	user?: User
@@ -37,7 +37,7 @@ export interface SidebarProps extends PageProps {
  * @extends React.Component
  * @exports
  * @default
- * @since 31/05/2022
+ * @since 23/05/2022
  */
 export default class Sidebar extends React.Component<SidebarProps> {
 

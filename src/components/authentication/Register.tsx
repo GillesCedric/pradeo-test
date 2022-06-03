@@ -12,7 +12,7 @@ import { Navigate } from 'react-router-dom'
  * @extends React.Component
  * @exports
  * @default
- * @since 31/05/2022
+ * @since 21/05/2022
  */
 export default class Register extends Authentication {
 

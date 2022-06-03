@@ -15,7 +15,7 @@ import fileDownload from 'js-file-download'
  * @author Gilles Cédric
  * @description this type is used to represent the Application model
  * @exports
- * @since 31/05/2022
+ * @since 23/05/2022
  */
 export type Application = {
 	id: string | number
@@ -31,7 +31,7 @@ export type Application = {
  * @description this interface represent the props definition for the Main component
  * @extends PageProps
  * @exports
- * @since 31/05/2022
+ * @since 23/05/2022
  */
 export interface MainProps extends PageProps {
 	applications: Application[]
@@ -44,11 +44,14 @@ export interface MainProps extends PageProps {
  * @description this interface represent the state definition fot the Main component
  * @extends PageState
  * @exports
- * @since 31/05/2022
+ * @since 23/05/2022
  */
 export interface MainState extends PageState {
 	applications: Application[]
-	addApplicationModalShowed: boolean
+	addApplicationModal: {
+		isShowed: boolean
+		loaded: number
+	}
 	deleteApplicationModal: {
 		isShowed: boolean
 		id: string | number
@@ -66,7 +69,7 @@ export interface MainState extends PageState {
  * @extends React.Component
  * @exports
  * @default
- * @since 31/05/2022
+ * @since 23/05/2022
  */
 export default class Main extends React.Component<MainProps, MainState> {
 
@@ -78,7 +81,10 @@ export default class Main extends React.Component<MainProps, MainState> {
 		super(props)
 		this.state = {
 			applications: this.props.applications,
-			addApplicationModalShowed: false,
+			addApplicationModal: {
+				isShowed: false,
+				loaded: 0
+			},
 			deleteApplicationModal: {
 				isShowed: false,
 				id: '',
@@ -111,7 +117,7 @@ export default class Main extends React.Component<MainProps, MainState> {
 	 * @readonly
 	 */
 	private readonly addApplication = (form: FormData): void => {
-		API.addApplication(form)
+		API.addApplication(form, loaded => this.setState({addApplicationModal: {isShowed: true, loaded: loaded}}))
 			.then(value => {
 				console.log(value)
 				this.setState({ notification: { isActive: true, text: value.data.message, status: 'success' } })
@@ -121,7 +127,7 @@ export default class Main extends React.Component<MainProps, MainState> {
 				console.log(error)
 				this.setState({ notification: { isActive: true, text: error.error || error.response.data.message, status: 'danger' } })
 			})
-			.finally(() => this.setState({ addApplicationModalShowed: false }))
+			.finally(() => this.setState({ addApplicationModal: {isShowed: false, loaded: 0} }))
 	}
 
 	/**
@@ -205,7 +211,7 @@ export default class Main extends React.Component<MainProps, MainState> {
 		return <main>
 			<header>
 				<div className="float-end mt-4">
-					<Button onClick={() => this.setState({ addApplicationModalShowed: true })}><span className="p-2">{this.props.vocabulary.add.application}</span><FaPlus /></Button>
+					<Button onClick={() => this.setState({ addApplicationModal: {isShowed: true, loaded: 0} })}><span className="p-2">{this.props.vocabulary.add.application}</span><FaPlus /></Button>
 				</div>
 			</header>
 
@@ -311,10 +317,11 @@ export default class Main extends React.Component<MainProps, MainState> {
 				</div>
 			</footer>
 			<AddApplication
-				show={this.state.addApplicationModalShowed}
+				show={this.state.addApplicationModal.isShowed}
 				vocabulary={this.props.vocabulary}
+				loaded={this.state.addApplicationModal.loaded}
 				onSubmit={form => this.addApplication(form)}
-				onClose={() => this.setState({ addApplicationModalShowed: false })}
+				onClose={() => this.setState({ addApplicationModal: {isShowed: false, loaded: 0} })}
 				onError={error => this.setState({ notification: { isActive: true, status: 'danger', text: error } })}
 			/>
 			<DeleteApplication

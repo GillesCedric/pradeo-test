@@ -1,6 +1,6 @@
 import React from "react"
 import { PageProps } from "./Page"
-import '../styles/404.scss';
+import '../styles/404.scss'
 
 /**
  * @class NotFound
@@ -9,7 +9,7 @@ import '../styles/404.scss';
  * @extends React.Component
  * @exports
  * @default
- * @since 30/05/2022
+ * @since 21/05/2022
  */
 export default class NotFound extends React.Component<PageProps> {
 

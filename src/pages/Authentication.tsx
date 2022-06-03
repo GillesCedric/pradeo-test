@@ -13,7 +13,7 @@ import { PageProps } from './Page'
  * @extends React.Component
  * @exports
  * @default
- * @since 30/05/2022
+ * @since 21/05/2022
  */
 export default class Authentication extends React.Component<PageProps, { isLogin: boolean }> {
 

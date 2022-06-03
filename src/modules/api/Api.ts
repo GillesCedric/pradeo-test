@@ -106,18 +106,22 @@ export default class API {
 	 * @method addApplication
 	 * @description this method is used to get all information's about a specific user
 	 * @param {FormData} data the FormData instance witch containing the file
+	 * @param {(loaded: number) => void} updater the updater function to update the state
 	 * @public
 	 * @static
 	 * @readonly
 	 * @returns {Promise<any>} the response from the API
 	 */
-	public static readonly addApplication: (data: FormData) => Promise<any> = async (data: FormData): Promise<any> => {
+	public static readonly addApplication: (data: FormData, updater: (loaded: number) => void) => Promise<any> = async (data: FormData, updater: (loaded: number) => void): Promise<any> => {
 		const { token, userId } = Crypto.decrypt(Cookies.get('user'))
 		const authorization = this.tokenPrefix + ' ' + token
 		return await axios.post(this.apiUrl + 'users/' + userId + "/applications", data, {
 			headers: {
 				authorization: authorization,
 				"Content-Type": "multipart/form-data"
+			},
+			onUploadProgress: ProgressEvent => {
+				updater((ProgressEvent.loaded / ProgressEvent.total*100))
 			}
 		})
 	}

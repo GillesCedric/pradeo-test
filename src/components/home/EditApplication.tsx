@@ -9,7 +9,7 @@ import { Application } from "./Main"
  * @author Gilles Cédric
  * @description this interface represent the props definition for the EditApplication component
  * @extends PageProps
- * @since 31/05/2022
+ * @since 25/05/2022
  */
 interface EditApplicationProps extends PageProps {
 	show: boolean
@@ -27,7 +27,7 @@ interface EditApplicationProps extends PageProps {
  * @extends React.Component
  * @exports
  * @default
- * @since 31/05/2022
+ * @since 25/05/2022
  */
 export default class EditApplication extends React.Component<EditApplicationProps>{
 

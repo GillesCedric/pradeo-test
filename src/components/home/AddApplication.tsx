@@ -1,5 +1,5 @@
 import React from "react"
-import { Button, Form, Modal } from "react-bootstrap"
+import { Button, Form, Modal, ProgressBar } from "react-bootstrap"
 import { Lang } from "../../modules/language/lang"
 import { PageProps } from "../../pages/Page"
 
@@ -8,11 +8,12 @@ import { PageProps } from "../../pages/Page"
  * @author Gilles Cédric
  * @description this interface represent the props definition for the AddApplication component
  * @extends PageProps
- * @since 31/05/2022
+ * @since 24/05/2022
  */
 interface AddApplicationProps extends PageProps {
 	show: boolean
 	vocabulary: Lang
+	loaded: number
 	onClose: () => void
 	onSubmit: (form: FormData) => void
 	onError: (error: string) => void
@@ -23,7 +24,7 @@ interface AddApplicationProps extends PageProps {
  * @author Gilles Cédric
  * @description this interface represent the state definition for the AddApplication component
  * @extends PageProps
- * @since 31/05/2022
+ * @since 24/05/2022
  */
 interface AddApplicationState {
 	file: File | null
@@ -36,7 +37,7 @@ interface AddApplicationState {
  * @extends React.Component
  * @exports
  * @default
- * @since 31/05/2022
+ * @since 24/05/2022
  */
 export default class AddApplication extends React.Component<AddApplicationProps, AddApplicationState>{
 
@@ -44,7 +45,7 @@ export default class AddApplication extends React.Component<AddApplicationProps,
 	 * @constructor
 	 * @param {AddApplicationProps} props the props of the component
 	 */
-	constructor(props: AddApplicationProps){
+	constructor(props: AddApplicationProps) {
 		super(props)
 		this.state = {
 			file: null
@@ -57,11 +58,12 @@ export default class AddApplication extends React.Component<AddApplicationProps,
 	 * @description the default props of the component
 	 */
 	static defaultProps = {
-    onSubmit: () => {},
-		onClose: () => {},
-		onError: () => {},
-		show: true
-  }
+		onSubmit: () => { },
+		onClose: () => { },
+		onError: () => { },
+		show: true,
+		loaded: 0
+	}
 
 	/**
 	 * @property form
@@ -83,24 +85,24 @@ export default class AddApplication extends React.Component<AddApplicationProps,
 		event.preventDefault()
 		event.stopPropagation()
 
-		if(this.form === null) return
+		if (this.form === null) return
 
 		const form = new FormData(this.form)
 
-		if(this.state.file != null ) {
+		if (this.state.file != null) {
 			form.append('file', this.state.file, this.state.file.name)
 			this.props.onSubmit(form)
-		}else{
+		} else {
 			this.props.onError('Aucune application n\'a été sélectionnée')
 		}
-			
+
 	}
 
 	/**
 	 * @override
 	 * @returns {JSX.Element}
 	 */
-	render = () => {
+	render = (): JSX.Element => {
 		return <>
 			<Modal show={this.props.show} onHide={() => this.props.onClose()}>
 				<Modal.Header closeButton>
@@ -108,20 +110,27 @@ export default class AddApplication extends React.Component<AddApplicationProps,
 				</Modal.Header>
 				<Modal.Body>
 					<Form ref={(form: HTMLFormElement | null) => this.form = form} encType='multipart/form-data'>
-							<Form.Label>{this.props.vocabulary.download_apk}</Form.Label>
-							<Form.Control
-								type="file"
-								onChange={(event: React.ChangeEvent<HTMLInputElement>) => this.setState({file: event.target.files !== null ? event.target.files[0] : null})}
-							/>
+						<Form.Label>{this.props.vocabulary.download_apk}</Form.Label>
+						<Form.Control
+							type="file"
+							onChange={(event: React.ChangeEvent<HTMLInputElement>) => this.setState({ file: event.target.files !== null ? event.target.files[0] : null })}
+						/>
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button variant="secondary" onClick={() => this.props.onClose()}>
-						{this.props.vocabulary.close}
-					</Button>
-					<Button type="submit" variant="primary" onClick={(event) => this.handleSubmit(event)}>
-						{this.props.vocabulary.save}
-					</Button>
+					{this.props.loaded == 0 ?
+						<>
+							<Button variant="secondary" onClick={() => this.props.onClose()}>
+								{this.props.vocabulary.close}
+							</Button>
+							<Button type="submit" variant="primary" onClick={(event) => this.handleSubmit(event)}>
+								{this.props.vocabulary.save}
+							</Button>
+						</>
+						:
+						<ProgressBar animated className="w-100" now={this.props.loaded} label={`${Math.round(this.props.loaded)}%`} />
+
+					}
 				</Modal.Footer>
 			</Modal>
 		</>

@@ -21,7 +21,7 @@ interface AuthenticationState extends PageState{
  * @extends React.Component
  * @exports
  * @default
- * @since 31/05/2022
+ * @since 22/05/2022
  */
 export default abstract class Authentication extends React.Component<PageProps, AuthenticationState> {
 

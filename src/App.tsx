@@ -14,6 +14,7 @@ import { ProtectedPage } from './components/authentication/Protected';
  * @interface StateApp
  * @author Gilles Cédric
  * @description this interface is the State definition for the App class
+ * @since 20/05/2022
  */
 interface StateApp {
   vocabulary: Lang

@@ -1,7 +1,7 @@
 /**
  * @author Gilles Cédric
  * @description the main file of the application
- * @since 23/05/2022
+ * @since 20/05/2022
  */
 
 import React from 'react';

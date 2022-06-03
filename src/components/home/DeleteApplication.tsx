@@ -8,7 +8,7 @@ import { PageProps } from "../../pages/Page"
  * @author Gilles Cédric
  * @description this interface represent the props definition for the DeleteApplication component
  * @extends PageProps
- * @since 31/05/2022
+ * @since 25/05/2022
  */
 interface DeleteApplicationProps extends PageProps {
 	show: boolean
@@ -25,7 +25,7 @@ interface DeleteApplicationProps extends PageProps {
  * @extends React.Component
  * @exports
  * @default
- * @since 31/05/2022
+ * @since 25/05/2022
  */
 export default class DeleteApplication extends React.Component<DeleteApplicationProps>{
 

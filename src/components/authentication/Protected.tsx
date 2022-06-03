@@ -9,7 +9,7 @@ import Cookies from "../../modules/cookies/Cookies"
  * @extends React.Component
  * @exports
  * @default
- * @since 31/05/2022
+ * @since 23/05/2022
  */
 export class ProtectedPage extends React.Component<{children?: React.ReactNode}> {
 

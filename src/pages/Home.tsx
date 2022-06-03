@@ -11,7 +11,7 @@ import API from "../modules/api/API"
  * @author Gilles Cédric
  * @extends PageProps
  * @description this interface is the Props definition for the Home component
- * @since 30/05/2022
+ * @since 21/05/2022
  */
 interface HomeProps extends PageProps {
 	updater: (index: number) => void
@@ -21,7 +21,7 @@ interface HomeProps extends PageProps {
  * @interface HomeState
  * @author Gilles Cédric
  * @description this interface is the State definition for the page component
- * @since 30/05/2022
+ * @since 21/05/2022
  */
 interface HomeState {
 	isLoading: boolean
@@ -36,7 +36,7 @@ interface HomeState {
  * @extends React.Component
  * @exports
  * @default
- * @since 30/05/2022
+ * @since 21/05/2022
  */
 export default class Home extends React.Component<HomeProps, HomeState> {
 

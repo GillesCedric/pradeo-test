@@ -6,7 +6,7 @@ import { PageProps } from '../../pages/Page'
  * @author Gilles Cédric
  * @description this interface represent the props definition for the Side component
  * @extends PageProps
- * @since 31/05/2022
+ * @since 21/05/2022
  */
 interface PropsSide extends PageProps {
 	containerRef: (ref: HTMLDivElement | null) => void,
@@ -21,7 +21,7 @@ interface PropsSide extends PageProps {
  * @extends React.Component
  * @exports
  * @default
- * @since 31/05/2022
+ * @since 21/05/2022
  */
 export default class Side extends React.Component<PropsSide>{
 

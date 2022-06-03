@@ -28,7 +28,7 @@ interface PropsToast {
  * @extends React.Component
  * @exports
  * @default
- * @since 31/05/2022
+ * @since 22/05/2022
  */
 export default class Toast extends React.Component<PropsToast>{
 
