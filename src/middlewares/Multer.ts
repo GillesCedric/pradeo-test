@@ -8,9 +8,26 @@ import Hash from '../utils/Hash'
 import { NextFunction, Request, Response } from 'express'
 import JWTUtils from '../utils/JWTUtils'
 
+/**
+ * @class Multer
+ * @author Gilles Cédric
+ * @description this class is used to represent the Multer middleware
+ * @exports
+ * @default
+ * @abstract
+ * @since 26/05/2022
+ */
 export default abstract class Multer {
 
-	private static readonly storage = () => multer.diskStorage({
+	/**
+	 * @method storage
+	 * @description this method is used to define the filename and the destination for the uploaded files
+	 * @readonly
+	 * @private
+	 * @static
+	 * @returns {multer.StorageEngine}
+	 */
+	private static readonly storage = (): multer.StorageEngine => multer.diskStorage({
 		destination: (req, file, callback) => {
 			const destination = process.env.APK_STORAGE.replace('/', path.sep) + req.params.userId + path.sep
 			if (!fs.existsSync(destination)) fs.mkdirSync(destination, { recursive: true })
@@ -61,14 +78,33 @@ export default abstract class Multer {
 		}
 	})
 
-	private static readonly fileFilter = (req: any, file: Express.Multer.File, callback: any) => {
+	/**
+	 * @method fileFilter
+	 * @description this method is used to define the filter for the uploaded files
+	 * @param {Request} req the request instance
+	 * @param {Express.Multer.File} file the uploaded file
+	 * @param { multer.FileFilterCallback} callback the callback function
+	 * @readonly
+	 * @private
+	 * @static
+	 * @returns {void}
+	 */
+	private static readonly fileFilter = (req: Request, file: Express.Multer.File, callback: multer.FileFilterCallback): void => {
 		//TODO improve the filter
 		if (file.originalname.endsWith('.apk') && file.mimetype.startsWith('application')) callback(null, true)
 		else callback(new Error('Le fichier envoyé n\'est pas un fichier apk valide'))
 	}
 
-	public static readonly upload = () => {
-		let multerMiddleware = null
+	/**
+	 * @method upload
+	 * @description this method is used to instanciate the multer middleware
+	 * @readonly
+	 * @public
+	 * @static
+	 * @returns {multer.Multer}
+	 */
+	public static readonly upload = (): multer.Multer => {
+		let multerMiddleware: multer.Multer
 		try {
 			multerMiddleware = multer({
 				storage: this.storage(),
@@ -80,7 +116,16 @@ export default abstract class Multer {
 		return multerMiddleware
 	}
 
-	public static makeMulterUploadMiddleware(multerUploadFunction: any) {
+	/**
+	 * @method makeMulterUploadMiddleware
+	 * @description this method is used to do some verifications before the upload of the file
+	 * @param {any} multerUploadFunction the multer upload function
+	 * @readonly
+	 * @public
+	 * @static
+	 * @returns {(req: Request, res: Response, next: NextFunction) => void}
+	 */
+	public static readonly makeMulterUploadMiddleware = (multerUploadFunction: any): (req: Request, res: Response, next: NextFunction) => void => {
 		return (req: Request, res: Response, next: NextFunction) =>
 			multerUploadFunction(req, res, (err: any) => {
 				//Middleware for some verification before the Multer middleware

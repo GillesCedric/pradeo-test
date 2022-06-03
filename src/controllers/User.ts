@@ -5,14 +5,30 @@ import * as bcrypt from 'bcrypt'
 import JWTUtils from '../utils/JWTUtils'
 import Application from '../models/Application'
 
-
-export class UserController {
+/**
+ * @class UserController
+ * @author Gilles Cédric
+ * @description this class is used to handle the request for the users endpoint
+ * @exports
+ * @default
+ * @since 22/05/2022
+ */
+export default class UserController {
 
     private readonly EMAIL_REGEX: RegExp = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
 
     private readonly PASSWORD_REGEX = /^(?=.*\d).{4,12}$/
 
-    public readonly login: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+    /**
+	 * @method login
+	 * @description this method is used to login a user in the web application
+	 * @param {Request} req the request instance
+	 * @param {Response} res the response instance
+	 * @readonly
+	 * @public
+	 * @returns {Response}
+	 */
+    public readonly login: (req: Request, res: Response) => void = (req: Request, res: Response): Response => {
 
         if (req.body.username == null || req.body.password == null) {
             return res.status(500).json({
@@ -64,7 +80,16 @@ export class UserController {
 
     }
 
-    public readonly register: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+    /**
+	 * @method register
+	 * @description this method is used to register a specific user in the web application
+	 * @param {Request} req the request instance
+	 * @param {Response} res the response instance
+	 * @readonly
+	 * @public
+	 * @returns {Response}
+	 */
+    public readonly register: (req: Request, res: Response) => void = (req: Request, res: Response): Response => {
 
         if (req.body.username == null || req.body.password == null || req.body.email == null) {
             return res.status(400).json({ error: "Paramètres manquants" })
@@ -134,7 +159,16 @@ export class UserController {
 
     }
 
-    public readonly get: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+    /**
+	 * @method get
+	 * @description this method is used to get a specific user
+	 * @param {Request} req the request instance
+	 * @param {Response} res the response instance
+	 * @readonly
+	 * @public
+	 * @returns {Response}
+	 */
+    public readonly get: (req: Request, res: Response) => void = (req: Request, res: Response): Response => {
         const authorization = req.headers.authorization
         const userId = JWTUtils.getUserFromToken(authorization)
 
@@ -176,7 +210,16 @@ export class UserController {
 
     }
 
-    public readonly getAll: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+    /**
+	 * @method getAll
+	 * @description this method is used to get all the users
+	 * @param {Request} req the request instance
+	 * @param {Response} res the response instance
+	 * @readonly
+	 * @public
+	 * @returns {Response}
+	 */
+    public readonly getAll: (req: Request, res: Response) => void = (req: Request, res: Response): Response => {
         const username = req.body.username
         const password = req.body.password
 

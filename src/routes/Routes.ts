@@ -1,18 +1,54 @@
-import { Request, Response, Application, NextFunction } from "express"
-import { UserController } from "../controllers/User"
-import { ApplicationController } from "../controllers/Application"
+import { Request, Response, Application } from "express"
+import UserController from "../controllers/User"
+import ApplicationController from "../controllers/Application"
 import Multer from "../middlewares/Multer"
-import JWTUtils from "../utils/JWTUtils"
 import * as path from 'path'
 
-export class Routes {
+/**
+ * @class App
+ * @author Gilles Cédric
+ * @description this class is used to define all the routes of the application
+ * @exports
+ * @default
+ * @since 21/05/2022
+ */
+export default class Routes {
 
-    private readonly version = process.env.API_VERSION || 'v1'
+    /**
+	 * @property version
+	 * @description the version of the application
+	 * @private
+	 * @readonly
+	 * @type {string}
+	 */
+    private readonly version: string = process.env.API_VERSION || 'v1'
 
+    /**
+	 * @property userController
+	 * @description the User controller
+	 * @private
+	 * @readonly
+	 * @type {UserController}
+	 */
     private readonly userController: UserController = new UserController()
+
+    /**
+	 * @property applicationController
+	 * @description the Application controller
+	 * @private
+	 * @readonly
+	 * @type {ApplicationController}
+	 */
     private readonly applicationController: ApplicationController = new ApplicationController()
 
-    public routes = (app: Application) => {
+    /**
+	 * @method routes
+	 * @description this method define all the endpoints of the application
+	 * @readonly
+	 * @public
+	 * @returns {void}
+	 */
+    public readonly routes = (app: Application): void => {
 
         //Default endpoint
         app.route('/api/' + this.version + '/')
@@ -41,10 +77,10 @@ export class Routes {
             .post(this.applicationController.verify)
             .get(this.applicationController.download)
 
-
         //Application endpoints
         app.route('/api/' + this.version + '/applications')
             .get(this.applicationController.getAll)
 
     }
+
 }

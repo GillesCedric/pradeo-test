@@ -1,6 +1,12 @@
 import { DataTypes, InstanceDestroyOptions, Model, Optional } from 'sequelize'
 import Config from '../config/database/Config'
 
+/**
+ * @interface ApplicationAttributes
+ * @author Gilles Cédric
+ * @description this interface is used to define the attributes for the Application Model
+ * @since 22/05/2022
+ */
 interface ApplicationAttributes {
   id: number
   hash: string
@@ -12,9 +18,35 @@ interface ApplicationAttributes {
   deletedAt?: Date
 }
 
+/**
+ * @interface ApplicationInput
+ * @author Gilles Cédric
+ * @description this interface is used to define the input attributes for the Application Model
+ * @extends Optional
+ * @exports
+ * @since 22/05/2022
+ */
 export interface ApplicationInput extends Optional<ApplicationAttributes, 'id' | 'hash'> {}
+
+/**
+ * @interface ApplicationOutput
+ * @author Gilles Cédric
+ * @description this interface is used to define the output attributes for the Application Model
+ * @extends Required
+ * @exports
+ * @since 22/05/2022
+ */
 export interface ApplicationOutput extends Required<ApplicationAttributes> {}
 
+/**
+ * @interface Application
+ * @author Gilles Cédric
+ * @description this class is the Model of the Applications table
+ * @extends Model
+ * @exports
+ * @default
+ * @since 22/05/2022
+ */
 export default class Application extends Model<ApplicationAttributes, ApplicationInput> implements ApplicationAttributes {
     public id: number
     public userId: number
@@ -29,6 +61,7 @@ export default class Application extends Model<ApplicationAttributes, Applicatio
     public readonly deletedAt: Date
   }
   
+  //Initialization of the model
   Application.init({
     id: {
       type: DataTypes.INTEGER,

@@ -6,12 +6,28 @@ import * as fs from 'fs'
 import * as path from 'path'
 import JWTUtils from '../utils/JWTUtils'
 import Application from '../models/Application'
-import VirusToptalApi from '../services/VirusToptalAPI'
+import VirusToptalApi from '../services/VirusTotalAPI'
 
+/**
+ * @class ApplicationController
+ * @author Gilles Cédric
+ * @description this class is used to handle the request for the applications endpoint
+ * @exports
+ * @default
+ * @since 22/05/2022
+ */
+export default class ApplicationController {
 
-export class ApplicationController {
-
-	public readonly get: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+	/**
+	 * @method get
+	 * @description this method is used to get all the applications for a specific user
+	 * @param {Request} req the request instance
+	 * @param {Response} res the response instance
+	 * @readonly
+	 * @public
+	 * @returns {Response}
+	 */
+	public readonly get: (req: Request, res: Response) => Response = (req: Request, res: Response): Response => {
 		const authorization = req.headers.authorization
 		const userId = JWTUtils.getUserFromToken(authorization)
 
@@ -52,7 +68,16 @@ export class ApplicationController {
 
 	}
 
-	public readonly add: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+	/**
+	 * @method add
+	 * @description this method is used to add a specific application to the server
+	 * @param {Request} req the request instance
+	 * @param {Response} res the response instance
+	 * @readonly
+	 * @public
+	 * @returns {Response}
+	 */
+	public readonly add: (req: Request, res: Response) => void = (req: Request, res: Response): Response => {
 		//FIXME handle the request and insert the data here not in the Multer middleware
 		const targetUserId = Number.parseInt(req.params.userId)
 
@@ -60,7 +85,16 @@ export class ApplicationController {
 
 	}
 
-	public readonly update: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+	/**
+	 * @method update
+	 * @description this method is used to update an application
+	 * @param {Request} req the request instance
+	 * @param {Response} res the response instance
+	 * @readonly
+	 * @public
+	 * @returns {Response}
+	 */
+	public readonly update: (req: Request, res: Response) => void = (req: Request, res: Response): Response => {
 
 		const authorization = req.headers.authorization
 		const userId = JWTUtils.getUserFromToken(authorization)
@@ -121,7 +155,16 @@ export class ApplicationController {
 
 	}
 
-	public readonly delete: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+	/**
+	 * @method delete
+	 * @description this method is used to delete a specific application
+	 * @param {Request} req the request instance
+	 * @param {Response} res the response instance
+	 * @readonly
+	 * @public
+	 * @returns {Response}
+	 */
+	public readonly delete: (req: Request, res: Response) => void = (req: Request, res: Response): Response => {
 		const authorization = req.headers.authorization
 		const userId = JWTUtils.getUserFromToken(authorization)
 
@@ -170,7 +213,16 @@ export class ApplicationController {
 		})
 	}
 
-	public readonly getAll: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+	/**
+	 * @method getAll
+	 * @description this method is used to get all the applications
+	 * @param {Request} req the request instance
+	 * @param {Response} res the response instance
+	 * @readonly
+	 * @public
+	 * @returns {Response}
+	 */
+	public readonly getAll: (req: Request, res: Response) => void = (req: Request, res: Response): Response => {
 		const username = req.body.username
 		const password = req.body.password
 
@@ -221,7 +273,16 @@ export class ApplicationController {
 
 	}
 
-	public readonly verify: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+	/**
+	 * @method verify
+	 * @description this method is used to verify a specific application
+	 * @param {Request} req the request instance
+	 * @param {Response} res the response instance
+	 * @readonly
+	 * @public
+	 * @returns {Response}
+	 */
+	public readonly verify: (req: Request, res: Response) => void = (req: Request, res: Response): Response => {
 
 		const hash = req.body.hash
 
@@ -300,7 +361,16 @@ export class ApplicationController {
 
 	}
 
-	public readonly download: (req: Request, res: Response) => void = (req: Request, res: Response) => {
+	/**
+	 * @method verify
+	 * @description this method is used to download a specific application
+	 * @param {Request} req the request instance
+	 * @param {Response} res the response instance
+	 * @readonly
+	 * @public
+	 * @returns {Response}
+	 */
+	public readonly download: (req: Request, res: Response) => void = (req: Request, res: Response): Response => {
 
 		const authorization = req.headers.authorization
 		const userId = JWTUtils.getUserFromToken(authorization)
