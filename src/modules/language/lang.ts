@@ -98,4 +98,11 @@ export abstract class Lang {
 	abstract readonly status: string
 	abstract readonly actions: string
 	abstract readonly applications_empty: string
+	abstract readonly delete_application: string
+	abstract readonly view_source: string
+	abstract readonly dark: string
+	abstract readonly light: string
+	abstract readonly my_account: string
+	abstract readonly my_profile: string
+	abstract readonly sign_out: string
 }

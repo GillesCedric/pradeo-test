@@ -71,12 +71,16 @@ export default class EditApplication extends React.Component<EditApplicationProp
 		event.preventDefault()
 		event.stopPropagation()
 
-		if(this.name === null && this.comment) return
+		if(this.name === null || this.comment === null) return
 		
 		const name = this.name?.value
 		const comment = this.comment?.value
 
-		this.props.onSubmit(name, comment)
+		if (name?.trim() !== '' || comment?.trim() !== '') {
+			this.props.onSubmit(name, comment)
+		} else {
+			this.props.onError('Veuillez remplir au moins un champ')
+		}
 			
 	}
 

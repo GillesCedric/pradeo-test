@@ -3,12 +3,12 @@ import { Button, Table } from "react-bootstrap"
 import { FaDownload, FaHeart, FaPencilAlt, FaPlus, FaTrash } from 'react-icons/fa'
 import API from "../../modules/api/API"
 import Crypto from "../../modules/crypto/Crypto"
-import { PageProps, PageState } from "../../pages/Page"
-import Toast from "../Toats"
+import { PageProps } from "../../pages/Page"
 import AddApplication from "./AddApplication"
 import DeleteApplication from "./DeleteApplication"
 import EditApplication from "./EditApplication"
 import fileDownload from 'js-file-download'
+import { ToastContainer, toast } from 'react-toastify'
 
 /**
  * @type Application
@@ -46,7 +46,7 @@ export interface MainProps extends PageProps {
  * @exports
  * @since 23/05/2022
  */
-export interface MainState extends PageState {
+export interface MainState {
 	applications: Application[]
 	addApplicationModal: {
 		isShowed: boolean
@@ -98,11 +98,6 @@ export default class Main extends React.Component<MainProps, MainState> {
 					status: '',
 					comment: ''
 				}
-			},
-			notification: {
-				status: 'danger',
-				isActive: false,
-				text: ''
 			}
 		}
 
@@ -117,17 +112,31 @@ export default class Main extends React.Component<MainProps, MainState> {
 	 * @readonly
 	 */
 	private readonly addApplication = (form: FormData): void => {
-		API.addApplication(form, loaded => this.setState({addApplicationModal: {isShowed: true, loaded: loaded}}))
+		API.addApplication(form, loaded => this.setState({ addApplicationModal: { isShowed: true, loaded: loaded } }))
 			.then(value => {
-				console.log(value)
-				this.setState({ notification: { isActive: true, text: value.data.message, status: 'success' } })
 				this.props.onUpdate(true)
+				toast.success(value.data.message, {
+					position: "bottom-right",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				})
 			})
 			.catch(error => {
-				console.log(error)
-				this.setState({ notification: { isActive: true, text: error.error || error.response.data.message, status: 'danger' } })
+				toast.error(error.error || error.response.data.message, {
+					position: "bottom-right",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				})
 			})
-			.finally(() => this.setState({ addApplicationModal: {isShowed: false, loaded: 0} }))
+			.finally(() => this.setState({ addApplicationModal: { isShowed: false, loaded: 0 } }))
 	}
 
 	/**
@@ -140,12 +149,27 @@ export default class Main extends React.Component<MainProps, MainState> {
 	private readonly deleteApplication = (): void => {
 		API.deleteApplication(this.state.deleteApplicationModal.id)
 			.then(value => {
-				this.setState({ notification: { isActive: true, text: value.data.message, status: 'success' } })
 				this.props.onUpdate()
+				toast.success(value.data.message, {
+					position: "bottom-right",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				})
 			})
 			.catch(error => {
-				console.log(error)
-				this.setState({ notification: { isActive: true, text: error.error || error.response.data.message, status: 'danger' } })
+				toast.error(error.error || error.response.data.message, {
+					position: "bottom-right",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				})
 			})
 			.finally(() => this.setState({ deleteApplicationModal: { isShowed: false, id: '' } }))
 	}
@@ -155,19 +179,34 @@ export default class Main extends React.Component<MainProps, MainState> {
 	 * @description the method is used to add an application to the API and handle the response
 	 * @param {string} name the name of the application
 	 * @param {string | undefined} comment the comment of the application
- 	 * @returns {void}
+		 * @returns {void}
 	 * @private
 	 * @readonly
 	 */
 	private readonly editApplication = (name?: string, comment?: string): void => {
 		API.updateApplication(this.state.editApplicationModal.application.id, name, comment)
 			.then(value => {
-				this.setState({ notification: { isActive: true, text: value.data.message, status: 'success' } })
 				this.props.onUpdate()
+				toast.success(value.data.message, {
+					position: "bottom-right",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				})
 			})
 			.catch(error => {
-				console.log(error)
-				this.setState({ notification: { isActive: true, text: error.error || error.response.data.message, status: 'danger' } })
+				toast.error(error.error || error.response.data.message, {
+					position: "bottom-right",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				})
 			})
 			.finally(() => this.setState({
 				editApplicationModal: {
@@ -192,7 +231,7 @@ export default class Main extends React.Component<MainProps, MainState> {
 	 * @private
 	 * @readonly
 	 */
-	private readonly download = (applicationId: string | number, fileName: string) => {
+	private readonly download = (applicationId: string | number, fileName: string): void => {
 		API.downloadApplication(applicationId)
 			.then(value => {
 				fileDownload(value.data, fileName + '.apk')
@@ -211,7 +250,7 @@ export default class Main extends React.Component<MainProps, MainState> {
 		return <main>
 			<header>
 				<div className="float-end mt-4">
-					<Button onClick={() => this.setState({ addApplicationModal: {isShowed: true, loaded: 0} })}><span className="p-2">{this.props.vocabulary.add.application}</span><FaPlus /></Button>
+					<Button onClick={() => this.setState({ addApplicationModal: { isShowed: true, loaded: 0 } })}><span className="p-2">{this.props.vocabulary.add.application}</span><FaPlus /></Button>
 				</div>
 			</header>
 
@@ -295,34 +334,29 @@ export default class Main extends React.Component<MainProps, MainState> {
 
 			<footer>
 				<small>
-					© {new Date().getFullYear()} made with <FaHeart style={{ color: 'red' }} /> by -{' '}
+					© {new Date().getFullYear()} made by {' '}
 					<a target="_blank" rel="noopener noreferrer" href="https://azouaoui.netlify.com">
-						Mohamed Azouaoui
+						Gilles Cédric
 					</a>
 				</small>
-				<br />
-				<div className="social-bagdes">
-					<a href="https://github.com/azouaoui-med" target="_blank" rel="noopener noreferrer">
-						<img
-							alt="GitHub followers"
-							src="https://img.shields.io/github/followers/azouaoui-med?label=github&style=social"
-						/>
-					</a>
-					<a href="https://twitter.com/azouaoui_med" target="_blank" rel="noopener noreferrer">
-						<img
-							alt="Twitter Follow"
-							src="https://img.shields.io/twitter/follow/azouaoui_med?label=twitter&style=social"
-						/>
-					</a>
-				</div>
 			</footer>
 			<AddApplication
 				show={this.state.addApplicationModal.isShowed}
 				vocabulary={this.props.vocabulary}
 				loaded={this.state.addApplicationModal.loaded}
 				onSubmit={form => this.addApplication(form)}
-				onClose={() => this.setState({ addApplicationModal: {isShowed: false, loaded: 0} })}
-				onError={error => this.setState({ notification: { isActive: true, status: 'danger', text: error } })}
+				onClose={() => this.setState({ addApplicationModal: { isShowed: false, loaded: 0 } })}
+				onError={error =>
+					toast.error(error, {
+						position: "bottom-right",
+						autoClose: 5000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+					})
+				}
 			/>
 			<DeleteApplication
 				show={this.state.deleteApplicationModal.isShowed}
@@ -347,15 +381,19 @@ export default class Main extends React.Component<MainProps, MainState> {
 						}
 					}
 				})}
+				onError={error =>
+					toast.error(error, {
+						position: "bottom-right",
+						autoClose: 5000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+					})
+				}
 			/>
-			<Toast
-				title={this.state.notification.status === "danger" ? this.props.vocabulary.error : this.props.vocabulary.notification}
-				vocabulary={this.props.vocabulary}
-				message={this.state.notification.text}
-				variant={this.state.notification.status}
-				show={this.state.notification.isActive}
-				onClose={() => this.setState({ notification: { isActive: false, text: '', status: 'danger' } })}
-			/>
+			<ToastContainer />
 		</main>
 	}
 }

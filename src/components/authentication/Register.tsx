@@ -1,9 +1,9 @@
 import React from 'react'
 import loginImg from "../../assets/login.svg"
 import Authentication from './Authentication'
-import Toast from '../Toats'
 import API from '../../modules/api/API'
 import { Navigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 
 /**
  * @class Register
@@ -41,17 +41,40 @@ export default class Register extends Authentication {
 				password,
 				email
 			}).then(value => {
-				this.setState({ notification: {isActive: true, status: 'success', text: this.props.vocabulary.register_success} })
+				toast.success(this.props.vocabulary.register_success, {
+					position: "bottom-right",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					})
 			})
 				.catch(error => {
-					console.log(error)
-					this.setState({ notification: {isActive: true, status: 'danger', text: error.response.data.error} })
+					toast.error(error.response.data.error, {
+						position: "bottom-right",
+						autoClose: 5000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						})
 				})
 				.finally(() => {
 					this.setState({ isLoading: false })
 				})
 		} else {
-			this.setState({ notification: { isActive: true, text: this.props.vocabulary.errors.empty, status: 'danger' } })
+			toast.error(this.props.vocabulary.errors.empty, {
+				position: "bottom-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				})
 		}
 	}
 
@@ -92,15 +115,7 @@ export default class Register extends Authentication {
 					</form>
 				</div>
 			</div>
-			<Toast
-				title={this.state.notification.status === "danger" ? this.props.vocabulary.error : this.props.vocabulary.notification}
-				vocabulary={this.props.vocabulary}
-				message={this.state.notification.text}
-				variant={this.state.notification.status}
-				show={this.state.notification.isActive}
-				position="middle-center"
-				onClose={() => this.setState({ notification: { isActive: false, text: '', status: 'danger' } })}
-			/>
+			<ToastContainer />
 		</>
 	}
 }

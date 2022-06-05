@@ -52,7 +52,7 @@ export default class DeleteApplication extends React.Component<DeleteApplication
 					<Modal.Title>{this.props.vocabulary.delete.application}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<p>Voulez vous vraiment supprimer cette application ?</p>
+					<p>{this.props.vocabulary.delete_application}</p>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="danger" onClick={() => this.props.onSubmit()}>

@@ -6,9 +6,11 @@ import { LangFr } from './modules/language/langFr';
 import { LangEn } from './modules/language/langEn';
 import './styles/app.scss'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-toastify/dist/ReactToastify.min.css';
 import NotFound from './pages/404';
 import Home from './pages/Home';
 import { ProtectedPage } from './components/authentication/Protected';
+import { Logout } from './components/authentication/Logout';
 
 /**
  * @interface StateApp
@@ -57,12 +59,18 @@ export default class App extends React.Component<{}, StateApp> {
     return <>
       <Routes>
         <Route path='/' element={<Navigate to={'/dashboard'} />} />
-        <Route path='/authenticate' element={<Authentication vocabulary={this.state.vocabulary} />} />
+        <Route path='/authenticate' element={
+          <Authentication
+            vocabulary={this.state.vocabulary}
+            updater={(index: number) => this.setState({ vocabulary: this.vocabularies[index] })}
+          />
+        } />
         <Route path='/dashboard' element={
           <ProtectedPage>
-            <Home updater={(index: number) => this.setState({ vocabulary: this.vocabularies[index]})} vocabulary={this.state.vocabulary} />
+            <Home updater={(index: number) => this.setState({ vocabulary: this.vocabularies[index] })} vocabulary={this.state.vocabulary} />
           </ProtectedPage>
         } />
+        <Route path='/logout' element={<Logout />} />
         <Route path='*' element={
           <ProtectedPage>
             <NotFound vocabulary={this.state.vocabulary} />

@@ -59,4 +59,11 @@ export class LangEn extends Lang {
 	status = "Status"
 	actions = "Actions"
 	applications_empty = "You have no application"
+	delete_application = "Do you really want to delete this application?"
+	view_source = "View Source"
+	dark = "Dark"
+	light = "Light"
+	my_account = "My account"
+	my_profile = "My profile"
+	sign_out = "Sign out"
 }

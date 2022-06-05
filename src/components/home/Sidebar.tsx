@@ -1,7 +1,9 @@
 import React from "react"
 import { ProSidebar, SidebarHeader, SidebarContent, Menu, MenuItem, SubMenu, SidebarFooter } from "react-pro-sidebar"
-import { FaAdjust, FaFolderPlus, FaGithub, FaLanguage, FaList, FaMobileAlt, FaTachometerAlt, FaUserPlus, FaUsers } from 'react-icons/fa'
+import { FaAdjust, FaFolderPlus, FaGithub, FaLanguage, FaList, FaMobileAlt, FaSignOutAlt, FaTachometerAlt, FaUser, FaUserEdit, FaUserPlus, FaUsers, FaUserSecret, FaUserShield, FaUserTag, FaUserTie } from 'react-icons/fa'
 import { PageProps } from "../../pages/Page"
+import { Navigate } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 /**
  * @type User
@@ -94,9 +96,17 @@ export default class Sidebar extends React.Component<SidebarProps> {
 							<MenuItem onClick={() => this.props.updater(0)} >{this.props.vocabulary.french}</MenuItem>
 						</SubMenu>
 						<SubMenu title={'Thème'} icon={<FaAdjust />} >
-							<MenuItem>Dark</MenuItem>
-							<MenuItem>Light</MenuItem>
+							<MenuItem>{this.props.vocabulary.dark}</MenuItem>
+							<MenuItem>{this.props.vocabulary.light}</MenuItem>
 						</SubMenu>
+					</SubMenu>
+				</Menu>
+				<Menu iconShape="circle">
+					<SubMenu title={this.props.vocabulary.my_account} icon={<FaUserTie />} >
+						<MenuItem icon={<FaUserEdit />}>{this.props.vocabulary.my_profile}</MenuItem>
+						<MenuItem icon={<FaSignOutAlt />}>
+							<NavLink to={'/logout'} >{this.props.vocabulary.sign_out}</NavLink>
+						</MenuItem>
 					</SubMenu>
 				</Menu>
 			</SidebarContent>
@@ -109,14 +119,14 @@ export default class Sidebar extends React.Component<SidebarProps> {
 					}}
 				>
 					<a
-						href="https://github.com/azouaoui-med/react-pro-sidebar"
+						href="https://github.com/GillesCedric/pradeo-test"
 						target="_blank"
 						className="sidebar-btn"
 						rel="noopener noreferrer"
 					>
 						<FaGithub />
 						<span style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
-							viewSource
+							{this.props.vocabulary.view_source}
 						</span>
 					</a>
 				</div>

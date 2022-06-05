@@ -1,6 +1,6 @@
 import React from "react"
 import Cookies from "../../modules/cookies/Cookies"
-import { PageProps, PageState } from '../../pages/Page'
+import { PageProps } from '../../pages/Page'
 
 /**
  * @interface AuthenticationProps
@@ -9,7 +9,7 @@ import { PageProps, PageState } from '../../pages/Page'
  * @extends PageState
  * @since 31/05/2022
  */
-interface AuthenticationState extends PageState{
+interface AuthenticationState {
 	isLoading: boolean
 	redirect: boolean
 }
@@ -42,12 +42,7 @@ export default abstract class Authentication extends React.Component<PageProps, 
 		super(props)
 		this.state = {
 			isLoading : false,
-			redirect: false,
-			notification: {
-				status: 'danger',
-				isActive: false,
-				text: ''
-			}
+			redirect: false
 		}
 		
 	}

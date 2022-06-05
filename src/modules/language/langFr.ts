@@ -59,4 +59,11 @@ export class LangFr extends Lang {
 	status = "Statut"
 	actions = "Actions"
 	applications_empty = "Vous n'avez aucune application"
+	delete_application = "Voulez vous vraiment supprimer cette application ?"
+	view_source = "Voir le code source"
+	dark = "Sombre"
+	light = "Clair"
+	my_account = "Mon compte"
+	my_profile = "Mon profile"
+	sign_out = "Se déconnecter"
 }

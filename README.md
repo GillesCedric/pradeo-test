@@ -1,6 +1,13 @@
-# Getting Started with Create React App
+# Pradeo-test-api-app
+
+This project is the web application for the pradeo test.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Practical informations for connection
+### (url for connection) [http://localhost:3000]
+### (Username): `user`
+### (Password): `user`
 
 ## Available Scripts
 
