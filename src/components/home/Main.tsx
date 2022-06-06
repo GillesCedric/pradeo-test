@@ -335,7 +335,7 @@ export default class Main extends React.Component<MainProps, MainState> {
 			<footer>
 				<small>
 					© {new Date().getFullYear()} made by {' '}
-					<a target="_blank" rel="noopener noreferrer" href="https://azouaoui.netlify.com">
+					<a target="_blank" rel="noopener noreferrer" href="https://github.com/GillesCedric">
 						Gilles Cédric
 					</a>
 				</small>
