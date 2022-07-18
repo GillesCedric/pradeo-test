@@ -72,9 +72,7 @@ export default class App extends React.Component<{}, StateApp> {
         } />
         <Route path='/logout' element={<Logout />} />
         <Route path='*' element={
-          <ProtectedPage>
             <NotFound vocabulary={this.state.vocabulary} />
-          </ProtectedPage>
         } />
       </Routes>
     </>
