@@ -20,4 +20,4 @@ Open [pradeo-test-web-app](https://github.com/GillesCedric/pradeo-test/tree/prad
 Open [pradeo-test-api-app](https://github.com/GillesCedric/pradeo-test/tree/pradeo-api-app) the api application for the pradeo test.
 
 ### Video Tutorial
-[![Watch the video](https://drive.google.com/file/d/1iAgMQV-WSC-com_eN9GFcEud2FYD_EHw/view?usp=sharing)]([https://youtu.be/vt5fpE0bzSY](https://drive.google.com/file/d/1n1O5NIc91o6gus2VtLREZ5CVv9bAkJX6/view?usp=share_link))
+You can download the video tutorial on how to download, install and run the project [here](https://drive.google.com/file/d/1n1O5NIc91o6gus2VtLREZ5CVv9bAkJX6/view?usp=sharing)
